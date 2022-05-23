@@ -54,6 +54,49 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
             graph.repaint();
         }
     }
+	
+	private void decodeFile(String fileName) {
+		ArrayList<String> lines = readFile(fileName);
+		
+		int split = lines.size();
+        for(int index = 0; index < lines.size(); index++) {
+            if(lines.get(index).equals("")) split = index;
+        }
+        
+        Tile[][] map = new Tile[split][lines.get(0).length()];
+        
+        //reads each char and finds the tile that corsonds to it
+        for(int index = 0; index < map.length; index++){
+          for(int i = 0; i < map[0].length; i++){
+                map[index][i] = findTile(lines.get(index).charAt(i));
+            }
+        }
+        
+        for(int index = split; index < lines.size(); index++) {
+            String line = lines.get(index);
+            String[] temp = new String[3];
+            i = 0;
+            for(char x : line) {
+                if(x != '-') temp[i]+=x;
+                else i++;
+            }
+            enemies.add(findEnemy(temp[0],Integer.parseInt(temp[1]),Integer.parseInt(temp[2])));
+        }
+	}
+	
+	private Tile findTile(char car) {
+        if(car == 'n') return new NormalTile();
+        if(car == 'w') return new WallTile();
+        if(car == 'l') return new LavaTile();
+        if(car == 'v') return new WaterTile();
+        if(car == 's') return new SpikeTile(1);
+        return null;
+    }
+    
+    private Enemy findEnemy(char car, int x, int y) {
+        if(car == 's') return new Enemy(x,y);
+		return null;
+    }
 
     private void drawTiles(Point p) {
 
@@ -189,7 +232,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
             /**JOptionPane to get name of file*/
             String name = (String)JOptionPane.showInputDialog(f1,"Enter name of file","Import",JOptionPane.INFORMATION_MESSAGE);
 
-            map = FileMangement.readMapFile(name);
+            decodeFile(name);
             graph.updateReset(map,enemies);
         }
         if(event.getSource() == swap) {

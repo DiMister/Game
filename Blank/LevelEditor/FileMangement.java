@@ -46,7 +46,7 @@ public class FileMangement
         catch(IOException ex) {}
     }
 
-    public static Tile[][] readMapFile(String fileName) {
+    public static ArrayList<String> readFile(String fileName) {
         ArrayList<String> lines = new ArrayList<String>();
             
         try{
@@ -61,48 +61,11 @@ public class FileMangement
             br.close();
         }
         catch (IOException ex){}
-        
-        int split = lines.size();
-        for(int index = 0; index < lines.size(); index++) {
-            if(lines.get(index).equals("")) split = index;
-        }
-        
-        Tile[][] map = new Tile[split][lines.get(0).length()];
-        
-        //reads each char and finds the tile that corsonds to it
-        for(int index = 0; index < map.length; index++){
-          for(int i = 0; i < map[0].length; i++){
-                map[index][i] = findTile(lines.get(index).charAt(i));
-            }
-        }
-        
-        ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-        for(int index = split; index < lines.size(); index++) {
-            String line = lines.get(index);
-            String[] temp = new String[3];
-            i = 0;
-            for(char x : line) {
-                if(x != '-') temp[i]+=x;
-                else i++;
-            }
-            enemies.add(new Enemy(temp[0],temp[1],temp[2]);
-        }
-        
-        return map;
+		
+		return lines;
     }
     
-    private static Tile findTile(char car) {
-        if(car == 'n') return new NormalTile();
-        if(car == 'w') return new WallTile();
-        if(car == 'l') return new LavaTile();
-        if(car == 'v') return new WaterTile();
-        if(car == 's') return new SpikeTile(1);
-        return null;
-    }
-    
-    private static Enemy findEnemy(char car) {
-        
-    }
+
     
     public static void splitImage(String fileName, int row, int col) {
 
