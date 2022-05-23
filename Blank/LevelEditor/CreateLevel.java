@@ -54,11 +54,11 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
             graph.repaint();
         }
     }
-	
-	private void decodeFile(String fileName) {
-		ArrayList<String> lines = readFile(fileName);
-		
-		int split = lines.size();
+    
+    private void decodeFile(String fileName) {
+        ArrayList<String> lines = FileMangement.readFile(fileName);
+        
+        int split = lines.size();
         for(int index = 0; index < lines.size(); index++) {
             if(lines.get(index).equals("")) split = index;
         }
@@ -75,16 +75,18 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         for(int index = split; index < lines.size(); index++) {
             String line = lines.get(index);
             String[] temp = new String[3];
-            i = 0;
-            for(char x : line) {
-                if(x != '-') temp[i]+=x;
-                else i++;
+            int j = 0;
+            for(int i = 0; i < line.length(); i++) {
+                char car = line.charAt(i);
+                if(car != '-') temp[j]+=car;
+                else j++;
             }
-            enemies.add(findEnemy(temp[0],Integer.parseInt(temp[1]),Integer.parseInt(temp[2])));
+            System.out.println(temp[0]+temp[1]+temp[2]);
+            enemies.add(findEnemy(temp[0].charAt(0),Integer.parseInt(temp[1]),Integer.parseInt(temp[2])));
         }
-	}
-	
-	private Tile findTile(char car) {
+    }
+    
+    private Tile findTile(char car) {
         if(car == 'n') return new NormalTile();
         if(car == 'w') return new WallTile();
         if(car == 'l') return new LavaTile();
@@ -95,7 +97,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
     
     private Enemy findEnemy(char car, int x, int y) {
         if(car == 's') return new Enemy(x,y);
-		return null;
+        return null;
     }
 
     private void drawTiles(Point p) {
