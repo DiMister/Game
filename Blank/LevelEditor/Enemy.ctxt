@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Enemy
+comment1.params=x\ y
+comment1.target=Enemy(int,\ int)
+comment2.params=
+comment2.target=void\ dead()
+comment3.params=
+comment3.target=boolean\ getDead()
+comment4.params=
+comment4.target=java.awt.Image\ getImage()
+comment5.params=
+comment5.target=java.lang.String\ toString()
+numComments=6
