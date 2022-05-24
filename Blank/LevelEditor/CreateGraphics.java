@@ -44,7 +44,8 @@ public class CreateGraphics extends JPanel
         
         //draw enemies
         for(Enemy e : enemies){
-            g.drawImage(e.getImage(),e.getX(),e.getY(),e.getSize(),e.getSize(),null);
+            g.setColor(Color.red);
+            g.fillRect(e.getX(),e.getY(),30,30);
         }
         
         //draw grid

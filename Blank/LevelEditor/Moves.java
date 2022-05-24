@@ -3,9 +3,9 @@ package LevelEditor;
 public abstract class Moves extends Base
 {
     private int speed,hp;
-    public Moves(int x,int y,int speed,int hp,int size)
+    public Moves(int x,int y,int speed,int hp)
     {
-       super(x,y,size);
+       super(x,y);
        this.speed = speed;
        this.hp = hp;
     }
