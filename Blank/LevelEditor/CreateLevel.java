@@ -12,8 +12,8 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
 {
     JFrame f1;
     JPanel main, sub, scrollPane;
-    JButton done, importFile, swap;
-    JComboBox<String> mapSelect, tilesSelect, enemySelect;
+    JButton done, importFile;
+    JComboBox<String> mapSelect, tilesSelect, enemySelect, objectSelect, swap;
     JSlider brushSelect;
     CreateGraphics graph;
     Dimension ss;
@@ -24,11 +24,13 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
     String[] tiles = {"Normal", "Wall", "Water", "Lava", "Spike"};
     String[] mapSize = {"Tiny", "Small", "Normal", "Huge", "Massive"};
     String[] enemiesList = {"Skeleton"};
+    String[] objectList = {"Player"};
+    String[] swapList = {"Tile Map","Enemies","Objects"};
 
     Tile[][] map = new Tile[18][18];
     Tile selectedTile = new NormalTile();
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-
+    Point playerSpawn;
 
     int brushSize = 1;
     boolean swapped = false;
@@ -63,7 +65,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
             if(lines.get(index).equals("")) split = index;
         }
         
-        Tile[][] map = new Tile[split][lines.get(0).length()];
+        map = new Tile[split][lines.get(0).length()];
         
         //reads each char and finds the tile that corsonds to it
         for(int index = 0; index < map.length; index++){
@@ -72,16 +74,19 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
             }
         }
         
-        for(int index = split; index < lines.size(); index++) {
+        for(int index = split+1; index < lines.size(); index++) {
             String line = lines.get(index);
             String[] temp = new String[3];
+            for (int i = 0; i < temp.length; i++) 
+                temp[i] = "";
+            
             int j = 0;
             for(int i = 0; i < line.length(); i++) {
                 char car = line.charAt(i);
                 if(car != '-') temp[j]+=car;
                 else j++;
             }
-            System.out.println(temp[0]+temp[1]+temp[2]);
+ 
             enemies.add(findEnemy(temp[0].charAt(0),Integer.parseInt(temp[1]),Integer.parseInt(temp[2])));
         }
     }
@@ -122,9 +127,9 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
     }
     
     private void drawEnemy(Point p) {
-        p.setLocation((int)((p.getX()) / 30),(int)((p.getY()) / 30));
-        if(p.y < map[0].length && p.x < map.length)
-            enemies.add(new Enemy(p.x*30,p.y*30));
+        //p.setLocation((int)((p.getX()) / 30),(int)((p.getY()) / 30));
+        if(p.y < map[0].length*30 && p.x < map.length*30)
+            enemies.add(new Enemy(p.x-30,p.y-30));
     }
     
     private boolean inside_circle(Point center, Point tile, float radius) {
@@ -157,6 +162,10 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         mapSelect.addActionListener(this);
         enemySelect = new JComboBox<>(enemiesList);
         enemySelect.addActionListener(this);
+        objectSelect = new JComboBox<>(objectList);
+        objectSelect.addActionListener(this);
+        swap = new JComboBox<>(swapList);
+        swap.addActionListener(this);
 
         //sliders suck they need their own changeLister cuz their *special*
         brushSelect = new JSlider(JSlider.HORIZONTAL,1,10,1);
@@ -166,8 +175,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         done.addActionListener(this);
         importFile = new JButton("Import File");
         importFile.addActionListener(this);
-        swap = new JButton("Swap");
-        swap.addActionListener(this);
+
         
         scrollPane = new JPanel();
         scrollPane.setLayout(new BorderLayout());
@@ -195,11 +203,22 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         f1.show();
     }
     
-    private void swapToObjects() {
+    private void swapToEneimes() {
         swapped = true;
         sub.removeAll();
         
         sub.add(enemySelect);
+        sub.add(swap);
+        sub.add(importFile);
+        sub.add(done);
+        f1.show();
+    }
+    
+    private void swapToObjects() {
+        swapped = true;
+        sub.removeAll();
+        
+        sub.add(objectSelect);
         sub.add(swap);
         sub.add(importFile);
         sub.add(done);
@@ -238,8 +257,12 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
             graph.updateReset(map,enemies);
         }
         if(event.getSource() == swap) {
-            if(swapped) swapToTiles();
-            else swapToObjects();
+            if(swap.getSelectedItem() == "Tile Map")
+                swapToTiles();
+            else if(swap.getSelectedItem() == "Enemies")
+                swapToEnemies();
+            else if(swap.getSelectedItem() == "Objects")
+                swapToObjects();
         }
         if(event.getSource() == mapSelect) {
             //wipes map and makes new size

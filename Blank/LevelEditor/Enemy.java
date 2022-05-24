@@ -11,8 +11,8 @@ public class Enemy extends Moves
     
     public Enemy(int x,int y)
     {
-        super(x,y,1,5);
-        image = Toolkit.getDefaultToolkit().getImage("images/normal.png");
+        super(x,y,1,5,60);
+        image = Toolkit.getDefaultToolkit().getImage("images/Skeleton Enemy/idle1.png");
     }
     
     public void dead(){dead = true;}
@@ -20,6 +20,7 @@ public class Enemy extends Moves
     public boolean getDead() {
         return dead;
     }
+    
     
     public Image getImage() {
         return image;
