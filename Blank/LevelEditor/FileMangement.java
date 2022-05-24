@@ -46,7 +46,7 @@ public class FileMangement
         catch(IOException ex) {}
     }
 
-    public static ArrayList<String> readFile(String fileName) {
+    public static Tile[][] readMapFile(String fileName) {
         ArrayList<String> lines = new ArrayList<String>();
             
         try{
@@ -62,10 +62,36 @@ public class FileMangement
         }
         catch (IOException ex){}
         
-        return lines;
+        int split = lines.size();
+        for(int index = 0; index < lines.size(); index++) {
+            if(lines.get(index) == "") split = index;
+        }
+        
+        //System.out.println(lines);
+        Tile[][] map = new Tile[split][lines.get(0).length()];
+        
+        //reads each char and finds the tile that corsonds to it
+        for(int index = 0; index < map.length; index++){
+          for(int i = 0; i < map[0].length; i++){
+                map[index][i] = findTile(lines.get(index).charAt(i));
+            }
+        }
+        
+        for(int index = split; index < lines.size(); index++) {
+            
+        }
+        
+        return map;
     }
     
-
+    private static Tile findTile(char car) {
+        if(car == 'n') return new NormalTile();
+        if(car == 'w') return new WallTile();
+        if(car == 'l') return new LavaTile();
+        if(car == 'v') return new WaterTile();
+        if(car == 's') return new SpikeTile(1);
+        return null;
+    }
     
     public static void splitImage(String fileName, int row, int col) {
 

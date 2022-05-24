@@ -1,9 +1,15 @@
 #BlueJ class context
 comment0.target=Tile
-comment1.params=image
-comment1.target=Tile(java.awt.Image)
+comment1.params=image\ id
+comment1.target=Tile(java.awt.Image,\ int)
 comment2.params=
 comment2.target=java.awt.Image\ getImage()
 comment3.params=
 comment3.target=java.lang.String\ toString()
-numComments=4
+comment4.params=
+comment4.target=int\ id()
+comment5.params=other
+comment5.target=boolean\ equals(Tile)
+comment6.params=newID
+comment6.target=boolean\ equals(int)
+numComments=7
