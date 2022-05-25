@@ -1,4 +1,4 @@
-import LevelEditor.*;
+import gameObjects.*;
 import java.util.ArrayList;
 import java.awt.*;
 import javax.swing.*;
@@ -40,6 +40,7 @@ public class GameGraphics extends JPanel
             }
         }
         
+       
         //draw enemies
         for(Enemy e : enemies){
             newDrawImage(g,e);
@@ -62,4 +63,13 @@ public class GameGraphics extends JPanel
         g.drawImage(image,(int)x,(int)y,object.getWidth(),object.getHeight(),null);
     }
 
+    private void drawPlayer(Graphics g, Base object) {
+        Image image = object.getImage();
+
+        double x = (screenW/2)-(image.getWidth(null)/2);
+        double y = object.getY()-(image.getHeight(null)/2);
+        
+        //System.out.println(object.getWidth() + "," + object.getHeight());
+        g.drawImage(image,(int)(screenW/2),(int)y,object.getWidth(),object.getHeight(),null);
+    }
 }

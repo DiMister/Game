@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Map
+comment1.params=lines
+comment1.target=Map(java.lang.String[])
+comment2.params=car
+comment2.target=gameObjects.Tile\ findTile(char)
+numComments=3

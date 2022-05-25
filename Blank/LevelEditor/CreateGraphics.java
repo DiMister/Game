@@ -1,5 +1,6 @@
 package LevelEditor;
 
+import gameObjects.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;

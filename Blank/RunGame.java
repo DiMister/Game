@@ -1,4 +1,4 @@
-import LevelEditor.*;
+import gameObjects.*;
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
@@ -87,14 +87,8 @@ public class RunGame implements KeyListener
             }
         }
         
-        map = new Tile[split][lines.get(0).length()];
-        
-        //reads each char and finds the tile that corsonds to it
-        for(int index = 0; index < map.length; index++){
-          for(int i = 0; i < map[0].length; i++){
-                map[index][i] = findTile(lines.get(index).charAt(i));
-            }
-        }
+        String[] mapLines;
+        for(int index = 0;
         
         for(int index = split+1; index < split2; index++) {
             String line = lines.get(index);
@@ -128,14 +122,7 @@ public class RunGame implements KeyListener
         }
     }
     
-    private Tile findTile(char car) {
-        if(car == 'n') return new NormalTile();
-        if(car == 'w') return new WallTile();
-        if(car == 'l') return new LavaTile();
-        if(car == 'v') return new WaterTile();
-        if(car == 's') return new SpikeTile(1);
-        return null;
-    }
+    
     
     private Enemy findEnemy(char car, int x, int y) {
         if(car == 's') return new Enemy(x,y);

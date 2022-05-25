@@ -1,9 +1,11 @@
 #BlueJ class context
 comment0.target=GameGraphics
 comment1.params=tiles\ enemies\ player\ tileSize\ ss
-comment1.target=GameGraphics(LevelEditor.Tile[][],\ java.util.ArrayList,\ LevelEditor.Player,\ int,\ java.awt.Dimension)
+comment1.target=GameGraphics(gameObjects.Tile[][],\ java.util.ArrayList,\ gameObjects.Player,\ int,\ java.awt.Dimension)
 comment2.params=g
 comment2.target=void\ paint(java.awt.Graphics)
 comment3.params=g\ object
-comment3.target=void\ newDrawImage(java.awt.Graphics,\ LevelEditor.Base)
-numComments=4
+comment3.target=void\ newDrawImage(java.awt.Graphics,\ gameObjects.Base)
+comment4.params=g\ object
+comment4.target=void\ drawPlayer(java.awt.Graphics,\ gameObjects.Base)
+numComments=5
