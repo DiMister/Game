@@ -6,9 +6,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Base
 {
-    int x,y,size; 
-    double ratio;
-    Image image;
+    protected int x,y,size; 
+    protected double ratio;
+    protected Image image;
     
     
     public Base(int x, int y, int size, Image image, double ratio)

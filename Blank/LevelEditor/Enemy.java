@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Enemy extends Movement
 {
-    Thread attack, idle;
+    private Thread attack, idle;
     public Enemy(int x,int y)
     {
         super(x,y,200,Toolkit.getDefaultToolkit().getImage("images/Skeleton Enemy/idle/idle1.png"),1,1);

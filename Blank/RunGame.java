@@ -37,7 +37,9 @@ public class RunGame implements KeyListener
             }
             catch(InterruptedException e) {} 
 
+            player.move();
             graph.repaint();
+            graph.requestFocus();
         }
     }
     
@@ -58,6 +60,7 @@ public class RunGame implements KeyListener
         main.setLayout(new BorderLayout());          
         main.add(graph,BorderLayout.CENTER);
 
+        
         c1.add(main);
         f1.show();
     }
@@ -143,20 +146,29 @@ public class RunGame implements KeyListener
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == 65) {
             //a || left
+            player.moveInput("Left");
         }
         if(e.getKeyCode() == 68) {
             //d || right
+            player.moveInput("Right");
         }
         if(e.getKeyCode() == 83) {
             //s || down
+            player.moveInput("Down");
         }
         if(e.getKeyCode() == 87) {
             //w || up
+            player.moveInput("Up");
         }
     }
     
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+        if(e.getKeyCode() == 65 || e.getKeyCode() == 68 || e.getKeyCode() == 83 || e.getKeyCode() == 87) {
+            //stop if any key released
+            player.moveInput("Stop");
+        }
+    }
     
     @Override
     public void keyTyped(KeyEvent e) {}

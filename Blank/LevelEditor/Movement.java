@@ -4,7 +4,7 @@ import java.awt.Image;
 
 public class Movement extends Base 
 {
-    double speed, dirX=0, dirY=0;
+    protected double speed, dirX=0, dirY=0;
 
     
     public Movement(int x, int y, int size, Image image, double ratio, double speed)
@@ -13,7 +13,8 @@ public class Movement extends Base
         this.speed = speed;
     }
 
-    public void Move() {
+    public void move() {
+        //System.out.println(dirX+", "+dirY);
         x+=dirX;
         y+=dirY;
     }

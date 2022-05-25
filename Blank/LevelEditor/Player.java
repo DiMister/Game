@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Player extends Movement
 {
-    Thread idle, attack;
+    private Thread idle, attack;
     public Player(int x, int y)
     {
         super(x,y,200,Toolkit.getDefaultToolkit().getImage("images/Player/idle/Warrior_Idle_1.png"),0.6875,1);       
@@ -14,6 +14,20 @@ public class Player extends Movement
     public void playIdle() {idle.start();}
     
     public void playAttack() {attack.start();}
+    
+    public void moveInput(String dir) {
+        System.out.println(dir);
+        dirY = 0;
+        dirX = 0;
+        if(dir == "Up")
+            dirY = -speed;
+        else if(dir == "Down")
+            dirY = speed;
+        else if(dir == "Left")
+            dirX = -speed;
+        else if(dir == "Right")
+            dirX = speed;
+    }
     
     public String toString(){return "p-"+getX()+"-"+getY();}
     
