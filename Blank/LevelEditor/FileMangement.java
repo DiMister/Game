@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 public class FileMangement
 {
 
-    public static void saveFile(Tile[][] map, ArrayList<Enemy> enemies, String fileName) {
+    public static void saveFile(Tile[][] map, ArrayList<Enemy> enemies, Point playerSpawn, String fileName) {
         FileWriter fwriter; 
         BufferedWriter bwriter;
 
@@ -41,6 +41,8 @@ public class FileMangement
                 bwriter.write(""+emy);
                 bwriter.newLine();
             }
+            bwriter.newLine();
+            bwriter.write("p-"+playerSpawn.x+"-"+playerSpawn.y);
             bwriter.close();                       //Must always close the file when finished writing to it.  
         }
         catch(IOException ex) {}
@@ -65,7 +67,23 @@ public class FileMangement
         return lines;
     }
     
-
+    public static Image[] createImageList(String drectory) {
+        File file = new File(drectory);
+        String[] fileNames = file.list();
+        
+        Image[] result = new Image[fileNames.length];
+        for(int index = 0; index < fileNames.length; index++) {
+            try{
+                System.out.println(fileNames[index]);
+                FileInputStream fis = new FileInputStream(drectory+"/"+fileNames[index]);
+                Image image = ImageIO.read(fis);
+                
+                result[index] = image;
+            }
+            catch (IOException ex){System.out.println("Error with creating image list");}
+        }
+        return result;
+    }
     
     public static void splitImage(String fileName, int row, int col) {
 

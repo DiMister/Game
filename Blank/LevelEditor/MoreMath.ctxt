@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=MoreMath
+comment1.params=x\ oldMin\ oldMax\ newMin\ newMax
+comment1.target=double\ map(double,\ double,\ double,\ double,\ double)
+numComments=2

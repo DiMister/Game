@@ -12,7 +12,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
 {
     JFrame f1;
     JPanel main, sub, scrollPane;
-    JButton done, importFile;
+    JButton done, importFile, snap;
     JComboBox<String> mapSelect, tilesSelect, enemySelect, objectSelect, swap;
     JSlider brushSelect;
     CreateGraphics graph;
@@ -32,7 +32,8 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     Point playerSpawn;
 
-    int brushSize = 1;
+    int brushSize = 1, tileSize = 40;
+    boolean snapToGrid = false;
     
     public CreateLevel()
     {
@@ -56,58 +57,12 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         }
     }
     
-    private void decodeFile(String fileName) {
-        ArrayList<String> lines = FileMangement.readFile(fileName);
-        
-        int split = lines.size();
-        for(int index = 0; index < lines.size(); index++) {
-            if(lines.get(index).equals("")) split = index;
-        }
-        
-        map = new Tile[split][lines.get(0).length()];
-        
-        //reads each char and finds the tile that corsonds to it
-        for(int index = 0; index < map.length; index++){
-          for(int i = 0; i < map[0].length; i++){
-                map[index][i] = findTile(lines.get(index).charAt(i));
-            }
-        }
-        
-        for(int index = split+1; index < lines.size(); index++) {
-            String line = lines.get(index);
-            String[] temp = new String[3];
-            for (int i = 0; i < temp.length; i++) 
-                temp[i] = "";
-            
-            int j = 0;
-            for(int i = 0; i < line.length(); i++) {
-                char car = line.charAt(i);
-                if(car != '-') temp[j]+=car;
-                else j++;
-            }
- 
-            enemies.add(findEnemy(temp[0].charAt(0),Integer.parseInt(temp[1]),Integer.parseInt(temp[2])));
-        }
-    }
-    
-    private Tile findTile(char car) {
-        if(car == 'n') return new NormalTile();
-        if(car == 'w') return new WallTile();
-        if(car == 'l') return new LavaTile();
-        if(car == 'v') return new WaterTile();
-        if(car == 's') return new SpikeTile(1);
-        return null;
-    }
-    
-    private Enemy findEnemy(char car, int x, int y) {
-        if(car == 's') return new Enemy(x,y);
-        return null;
-    }
+
 
     private void drawTiles(Point p) {
 
         //set location based on the index value of grid and dispalcment
-        p.setLocation((int)((p.getX()) / 30),(int)((p.getY()) / 30));
+        p.setLocation((int)((p.getX()) / tileSize),(int)((p.getY()) / tileSize));
         //int rounding caused a lot of pain
         int row = (int)p.getX();
         int col = (int)p.getY();
@@ -126,15 +81,13 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
     }
     
     private void drawEnemy(Point p) {
-        //p.setLocation((int)((p.getX()) / 30),(int)((p.getY()) / 30));
-        if(p.y < map[0].length*30 && p.x < map.length*30)
-            enemies.add(new Enemy(p.x-30,p.y-30));
+        if(p.y < map[0].length*tileSize && p.x < map.length*tileSize)
+            enemies.add(new Enemy(p.x,p.y));
     }
     
     private void drawObject(Point p) {
-        //p.setLocation((int)((p.getX()) / 30),(int)((p.getY()) / 30));
-        if(p.y < map[0].length*30 && p.x < map.length*30)
-            playerSpawn = new Point(p.x-15,p.y-15);
+        if(p.y < map[0].length*tileSize && p.x < map.length*tileSize)
+            playerSpawn = new Point(p.x,p.y);
         graph.updateReset(map,enemies,playerSpawn);
     }
     
@@ -156,7 +109,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f1.setResizable(false);
 
-        graph = new CreateGraphics(map,enemies,playerSpawn);
+        graph = new CreateGraphics(map,enemies,playerSpawn,tileSize);
         graph.addMouseMotionListener(this);
         graph.addMouseListener(this);
 
@@ -181,6 +134,8 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         done.addActionListener(this);
         importFile = new JButton("Import File");
         importFile.addActionListener(this);
+        snap = new JButton("Snap To Grid");
+        snap.addActionListener(this);
 
         
         scrollPane = new JPanel();
@@ -213,6 +168,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         sub.removeAll();
         
         sub.add(enemySelect);
+        sub.add(snap);
         sub.add(swap);  
         sub.add(importFile);
         sub.add(done);
@@ -223,6 +179,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         sub.removeAll();
         
         sub.add(objectSelect);
+        sub.add(snap);
         sub.add(swap);
         sub.add(importFile);
         sub.add(done);
@@ -249,7 +206,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
             /**JOptionPane to get name of level*/
             String name = (String)JOptionPane.showInputDialog(f1,"Enter name of level","Save",JOptionPane.INFORMATION_MESSAGE);
 
-            FileMangement.saveFile(map,enemies,name);
+            FileMangement.saveFile(map,enemies,playerSpawn,name);
         }
         if(event.getSource() == importFile) {
             //import level
@@ -258,6 +215,10 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
 
             decodeFile(name);
             graph.updateReset(map,enemies,playerSpawn);
+        }
+        if(event.getSource() == snap) {
+            if(snapToGrid) snapToGrid = false;
+            else snapToGrid = true;
         }
         if(event.getSource() == swap) {
             if(swap.getSelectedItem() == "Tile Map")
@@ -274,7 +235,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
             else if(mapSelect.getSelectedItem() ==  "Small")
                 map = new Tile[20][20];
             else if(mapSelect.getSelectedItem() ==  "Normal")
-                map = new Tile[40][30];
+                map = new Tile[40][tileSize];
             else if(mapSelect.getSelectedItem() ==  "Huge")
                 map = new Tile[80][80];
             else if(mapSelect.getSelectedItem() ==  "Massive"){
@@ -286,7 +247,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
             playerSpawn = null;
             enemies = new ArrayList<Enemy>();
             graph.updateReset(map,enemies,playerSpawn);
-            scrollPane.setPreferredSize(new Dimension(map.length*30,map.length*30));
+            scrollPane.setPreferredSize(new Dimension(map.length*tileSize,map.length*tileSize));
             scrollPane.revalidate();
         }
         if(event.getSource() == tilesSelect) {
@@ -315,9 +276,11 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
     
     @Override
     public void mousePressed(MouseEvent evt) {
-        if(swap.getSelectedItem() == "Tile Map") drawTiles(evt.getPoint());
-        else if(swap.getSelectedItem() == "Enemies")drawEnemy(evt.getPoint());
-        else if(swap.getSelectedItem() == "Objects") drawObject(evt.getPoint());
+        Point p = evt.getPoint();
+        if(snapToGrid) p.setLocation((int)((p.getX()) / tileSize)*tileSize+(tileSize/2),(int)((p.getY()) / tileSize)*tileSize+(tileSize/2));
+        if(swap.getSelectedItem() == "Tile Map") drawTiles(p);
+        else if(swap.getSelectedItem() == "Enemies")drawEnemy(p);
+        else if(swap.getSelectedItem() == "Objects") drawObject(p);
     }
     
     @Override
@@ -338,4 +301,80 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         brushSize = brushSelect.getValue() + brushSelect.getValue() -1;
     }
 
+    /** changes a list of strings from file into tiles, enemies, and objects */
+    private void decodeFile(String fileName) {
+        ArrayList<String> lines = FileMangement.readFile(fileName);
+        
+        //find line where tiles --> enemies
+        int split = lines.size();
+        for(int index = 0; index < lines.size(); index++) {
+            if(lines.get(index).equals("")) {
+                split = index;
+                break;
+            }
+        }
+        
+        //find line where enemies --> objects
+        int split2 = lines.size();
+        for(int index = split+1; index < lines.size(); index++) {
+            if(lines.get(index).equals("")) {
+                split2 = index;
+                break;
+            }
+        }
+        
+        map = new Tile[split][lines.get(0).length()];
+        
+        //reads each char and finds the tile that corsonds to it
+        for(int index = 0; index < map.length; index++){
+          for(int i = 0; i < map[0].length; i++){
+                map[index][i] = findTile(lines.get(index).charAt(i));
+            }
+        }
+        
+        for(int index = split+1; index < split2; index++) {
+            String line = lines.get(index);
+            String[] temp = new String[3];
+            for (int i = 0; i < temp.length; i++) 
+                temp[i] = "";
+            
+            int j = 0;
+            for(int i = 0; i < line.length(); i++) {
+                char car = line.charAt(i);
+                if(car != '-') temp[j]+=car;
+                else j++;
+            }
+ 
+            enemies.add(findEnemy(temp[0].charAt(0),Integer.parseInt(temp[1]),Integer.parseInt(temp[2])));
+        }
+        
+        if(split2 < lines.size()) {
+            String line = lines.get(split2+1);
+            String[] temp = new String[3];
+            for (int i = 0; i < temp.length; i++) 
+                temp[i] = "";
+            
+            int j = 0;
+            for(int i = 0; i < line.length(); i++) {
+                char car = line.charAt(i);
+                if(car != '-') temp[j]+=car;
+                else j++;
+            }
+            playerSpawn = new Point(Integer.parseInt(temp[1]),Integer.parseInt(temp[2]));
+        }
+    }
+    
+    private Tile findTile(char car) {
+        if(car == 'n') return new NormalTile();
+        if(car == 'w') return new WallTile();
+        if(car == 'l') return new LavaTile();
+        if(car == 'v') return new WaterTile();
+        if(car == 's') return new SpikeTile(1);
+        return null;
+    }
+    
+    private Enemy findEnemy(char car, int x, int y) {
+        if(car == 's') return new Enemy(x,y);
+        return null;
+    }
 }

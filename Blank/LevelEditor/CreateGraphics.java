@@ -10,13 +10,15 @@ public class CreateGraphics extends JPanel
     Tile[][] map;
     ArrayList<Enemy> enemies;
     Point playerSpawn;
+    int tileSize;
     
-    public CreateGraphics(Tile[][] tiles, ArrayList<Enemy> enemies, Point playerSpawn)
+    public CreateGraphics(Tile[][] tiles, ArrayList<Enemy> enemies, Point playerSpawn, int tileSize)
     {
         //tommyinit
         map = tiles;
         this.enemies = enemies;
         this.playerSpawn = playerSpawn;
+        this.tileSize = tileSize;
         setBackground(Color.black);
     }
     
@@ -39,7 +41,7 @@ public class CreateGraphics extends JPanel
                 Tile temp = map[index][i];
                 //skip if null
                 if(temp != null) {
-                    g.drawImage(temp.getImage(),30*index,30*i,30,30,null);
+                    g.drawImage(temp.getImage(),tileSize*index,tileSize*i,tileSize,tileSize,null);
                 }
                 //g.drawString(""+i+","+index,30*index,30*i);
             }
@@ -49,18 +51,19 @@ public class CreateGraphics extends JPanel
         for(int index = 0; index < map.length; index++){
           for(int i = 0; i < map[0].length; i++){
                 g.setColor(Color.gray);
-                g.drawRect(30*index,30*i,30,30);
+                g.drawRect(tileSize*index,tileSize*i,tileSize,tileSize);
             }
         }
         
         //draw enemies
         for(Enemy e : enemies){
-            g.drawImage(e.getImage(),e.getX(),e.getY(),e.getSize(),e.getSize(),null);
+            Image image = e.getImage();
+            g.drawImage(image,e.getX()-(image.getWidth(null)/2),e.getY()-(image.getHeight(null)/2),e.getWidth(),e.getHeight(),null);
         }
         
         if(playerSpawn != null) {
             g.setColor(Color.red);
-            g.fillOval(playerSpawn.x,playerSpawn.y,30,30);
+            g.fillOval(playerSpawn.x-15,playerSpawn.y-15,30,30);
         }
 
     }
