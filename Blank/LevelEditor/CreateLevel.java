@@ -12,7 +12,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
 {
     JFrame f1;
     JPanel main, sub, scrollPane;
-    JButton done, importFile, snap;
+    JButton done, importFile, snap, fill;
     JComboBox<String> mapSelect, tilesSelect, enemySelect, objectSelect, swap;
     JSlider brushSelect;
     CreateGraphics graph;
@@ -34,6 +34,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
 
     int brushSize = 1, tileSize = 40;
     boolean snapToGrid = false;
+    boolean toggleFill = false;
     
     public CreateLevel()
     {
@@ -136,6 +137,8 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         importFile.addActionListener(this);
         snap = new JButton("Snap To Grid");
         snap.addActionListener(this);
+        fill = new JButton("Fill Bucket");
+        fill.addActionListener(this);
 
         
         scrollPane = new JPanel();
@@ -148,6 +151,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         sub = new JPanel(); 
         sub.add(tilesSelect);
         sub.add(brushSelect);
+        sub.add(fill);
         sub.add(mapSelect);
         sub.add(swap);
         sub.add(importFile);
@@ -191,6 +195,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         
         sub.add(tilesSelect);
         sub.add(brushSelect);
+        sub.add(fill);
         sub.add(mapSelect);
         sub.add(swap);
         sub.add(importFile);
@@ -219,6 +224,10 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         if(event.getSource() == snap) {
             if(snapToGrid) snapToGrid = false;
             else snapToGrid = true;
+        }
+        if(event.getSource() == fill) {
+            if(toggleFill) toggleFill = false;
+            else toggleFill = true;
         }
         if(event.getSource() == swap) {
             if(swap.getSelectedItem() == "Tile Map")
@@ -265,6 +274,33 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
         }
     }
     
+    public void fill(int tileRow, int tileCol, int replaceID, Tile wantTile) {
+        map[tileRow][tileCol] = wantTile;
+        
+        if (tileRow < map.length-1 && map[tileRow+1][tileCol].equals(replaceID)) 
+            fill (tileRow+1, tileCol, replaceID, wantTile);
+        if (tileCol > 0 && map[tileRow][tileCol-1].equals(replaceID)) 
+            fill (tileRow, tileCol-1, replaceID, wantTile);
+        if (tileRow > 0 && map[tileRow-1][tileCol].equals(replaceID)) 
+            fill (tileRow-1, tileCol, replaceID, wantTile);
+        if (tileCol < map[0].length-1 && map[tileRow][tileCol+1].equals(replaceID)) 
+            fill (tileRow, tileCol+1, replaceID, wantTile);
+    }
+    
+    public void fillNull(int tileRow, int tileCol, Tile wantTile) {
+        
+        map[tileRow][tileCol] = wantTile;
+        
+        if (tileRow < map.length-1 && map[tileRow+1][tileCol] == null) 
+            fillNull(tileRow+1, tileCol, wantTile);
+        if (tileCol > 0 && map[tileRow][tileCol-1] == null) 
+            fillNull(tileRow, tileCol-1, wantTile);
+        if (tileRow > 0 && map[tileRow-1][tileCol] == null) 
+            fillNull(tileRow-1, tileCol, wantTile);
+        if (tileCol < map[0].length-1 && map[tileRow][tileCol+1] == null) 
+            fillNull(tileRow, tileCol+1, wantTile);
+    }
+    
     @Override
     public void mouseClicked(MouseEvent evt) {}
 
@@ -278,9 +314,23 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
     public void mousePressed(MouseEvent evt) {
         Point p = evt.getPoint();
         if(snapToGrid) p.setLocation((int)((p.getX()) / tileSize)*tileSize+(tileSize/2),(int)((p.getY()) / tileSize)*tileSize+(tileSize/2));
-        if(swap.getSelectedItem() == "Tile Map") drawTiles(p);
-        else if(swap.getSelectedItem() == "Enemies")drawEnemy(p);
+        if(swap.getSelectedItem() == "Tile Map") {
+            if(toggleFill) {
+                p.setLocation((int)((p.getX()) / tileSize),(int)((p.getY()) / tileSize));
+                int row = (int)p.getX();
+                int col = (int)p.getY();
+                if (map[row][col] != null && !map[row][col].equals(selectedTile)) fill(row,col,map[row][col].id(),selectedTile);
+                else  fillNull(row,col,selectedTile);
+            }else drawTiles(p);
+        }else if(swap.getSelectedItem() == "Enemies")drawEnemy(p);
         else if(swap.getSelectedItem() == "Objects") drawObject(p);
+        
+        /*Point p = evt.getPoint();
+        p.setLocation((int)((p.getX()) / 30),(int)((p.getY()) / 30));
+        int row = (int)p.getX();
+        int col = (int)p.getY();
+        if (map[row][col] != null && !map[row][col].equals(selectedTile)) fill(row,col,map[row][col].id(),selectedTile);
+        else  fillNull(row,col,selectedTile);*/
     }
     
     @Override
@@ -292,7 +342,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
     
     @Override
     public void mouseDragged(MouseEvent evt) {
-        if(swap.getSelectedItem() == "Tile Map") drawTiles(evt.getPoint());
+        if(swap.getSelectedItem() == "Tile Map" && !toggleFill) drawTiles(evt.getPoint());
     }
 
     @Override

@@ -12,7 +12,7 @@ public class WallTile extends Tile
     
     public WallTile()
     {
-       super(Toolkit.getDefaultToolkit().getImage("images/wall.png"));
+       super(Toolkit.getDefaultToolkit().getImage("images/wall.png"), 2);
     }
 
     public String toString(){return "w";}
