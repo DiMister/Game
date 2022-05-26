@@ -1,11 +1,13 @@
 #BlueJ class context
 comment0.target=FileMangement
 comment1.params=map\ enemies\ playerSpawn\ fileName
-comment1.target=void\ saveFile(LevelEditor.Tile[][],\ java.util.ArrayList,\ java.awt.Point,\ java.lang.String)
+comment1.target=void\ saveFile(Tile[][],\ java.util.ArrayList,\ java.awt.Point,\ java.lang.String)
 comment2.params=fileName
 comment2.target=java.util.ArrayList\ readFile(java.lang.String)
 comment3.params=drectory
 comment3.target=java.awt.Image[]\ createImageList(java.lang.String)
-comment4.params=fileName\ row\ col
-comment4.target=void\ splitImage(java.lang.String,\ int,\ int)
-numComments=5
+comment4.params=drectory
+comment4.target=java.awt.Image[]\ createImageListFlip(java.lang.String)
+comment5.params=fileName\ row\ col
+comment5.target=void\ splitImage(java.lang.String,\ int,\ int)
+numComments=6

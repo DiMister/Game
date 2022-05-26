@@ -1,9 +1,9 @@
 #BlueJ class context
 comment0.target=CreateGraphics
 comment1.params=tiles\ enemies\ playerSpawn\ tileSize
-comment1.target=CreateGraphics(gameObjects.Tile[][],\ java.util.ArrayList,\ java.awt.Point,\ int)
+comment1.target=CreateGraphics(Tile[][],\ java.util.ArrayList,\ java.awt.Point,\ int)
 comment2.params=tiles\ enemies\ playerSpawn
-comment2.target=void\ updateReset(gameObjects.Tile[][],\ java.util.ArrayList,\ java.awt.Point)
+comment2.target=void\ updateReset(Tile[][],\ java.util.ArrayList,\ java.awt.Point)
 comment3.params=g
 comment3.target=void\ paint(java.awt.Graphics)
 numComments=4

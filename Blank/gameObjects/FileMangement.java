@@ -8,6 +8,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 
 public class FileMangement
 {
@@ -21,7 +23,7 @@ public class FileMangement
         {
             fwriter = new FileWriter(thefile);
             bwriter = new BufferedWriter(fwriter); 
-            
+
             //for each tile in tile map adds letter in a grid in file
             for(Tile[] row : map){
                 String line = "";
@@ -50,12 +52,12 @@ public class FileMangement
 
     public static ArrayList<String> readFile(String fileName) {
         ArrayList<String> lines = new ArrayList<String>();
-            
+
         try{
             FileInputStream fstream = new FileInputStream(fileName+".txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
             String line;
-            
+
             //adds lines of text from file to String[]
             while((line = br.readLine()) != null){
                 lines.add(line);
@@ -63,28 +65,51 @@ public class FileMangement
             br.close();
         }
         catch (IOException ex){}
-        
+
         return lines;
     }
-    
+
     public static Image[] createImageList(String drectory) {
         File file = new File(drectory);
         String[] fileNames = file.list();
-        
+
         Image[] result = new Image[fileNames.length];
         for(int index = 0; index < fileNames.length; index++) {
             try{
-                System.out.println(fileNames[index]);
+                //System.out.println(fileNames[index]);
                 FileInputStream fis = new FileInputStream(drectory+"/"+fileNames[index]);
                 Image image = ImageIO.read(fis);
-                
+
                 result[index] = image;
             }
             catch (IOException ex){System.out.println("Error with creating image list");}
         }
         return result;
     }
-    
+
+    public static Image[] createImageListFlip(String drectory) {
+        File file = new File(drectory);
+        String[] fileNames = file.list();
+
+        Image[] result = new Image[fileNames.length];
+        for(int index = 0; index < fileNames.length; index++) {
+            try{
+                //System.out.println(fileNames[index]);
+                FileInputStream fis = new FileInputStream(drectory+"/"+fileNames[index]);
+                BufferedImage image = ImageIO.read(fis);
+                // Flip the image horizontally
+                AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+                tx.translate(-image.getWidth(null), 0);
+                AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+                image = op.filter(image, null);
+
+                result[index] = image;
+            }
+            catch (IOException ex){System.out.println("Error with creating image list");}
+        }
+        return result;
+    }
+
     public static void splitImage(String fileName, int row, int col) {
 
         File file = new File(fileName); // I have bear.jpg in my working directory
@@ -92,12 +117,11 @@ public class FileMangement
         try{
             FileInputStream fis = new FileInputStream(file);
             image = ImageIO.read(fis); //reading the image file
-            
-    
+
             int rows = row; //You should decide the values for rows and cols variables
             int cols = col;
             int chunks = rows * cols;
-    
+
             int chunkWidth = image.getWidth() / cols; // determines the chunk width and height
             int chunkHeight = image.getHeight() / rows;
             int count = 0;
@@ -106,7 +130,7 @@ public class FileMangement
                 for (int y = 0; y < cols; y++) {
                     //Initialize the image array with image chunks
                     imgs[count] = new BufferedImage(chunkWidth, chunkHeight, image.getType());
-    
+
                     // draws the image chunk
                     Graphics2D gr = imgs[count++].createGraphics();
                     gr.drawImage(image, 0, 0, chunkWidth, chunkHeight, chunkWidth * y, chunkHeight * x, chunkWidth * y + chunkWidth, chunkHeight * x + chunkHeight, null);
@@ -114,7 +138,7 @@ public class FileMangement
                 }
             }
             System.out.println("Splitting done");
-    
+
             //writing mini images into image files
             for (int i = 0; i < imgs.length; i++) {
                 ImageIO.write(imgs[i], "png", new File("img" + i + ".png"));
@@ -125,4 +149,3 @@ public class FileMangement
     }
 }
 
-    

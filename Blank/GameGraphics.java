@@ -5,12 +5,12 @@ import javax.swing.*;
 
 public class GameGraphics extends JPanel
 {
-    Tile[][] map;
+    Map map;
     ArrayList<Enemy> enemies;
     Player player;
     int tileSize,screenH,screenW;
     
-    public GameGraphics(Tile[][] tiles, ArrayList<Enemy> enemies, Player player, int tileSize, Dimension ss)
+    public GameGraphics(Map tiles, ArrayList<Enemy> enemies, Player player, int tileSize, Dimension ss)
     {
         //tommyinit
         map = tiles;
@@ -27,18 +27,11 @@ public class GameGraphics extends JPanel
     { 
         super.paint(g); 
         //displaces entire graph (for fun put this in front of super.paint(g)
-        g.translate((screenW/2)-(map.length*tileSize/2),(screenH/2)-(map[0].length*tileSize/2)-50);
+        g.translate((screenW/2)-(map.getRows()*tileSize/2)-(player.getX()/2),(screenH/2)-(map.getCols()*tileSize/2)-50-(player.getY()/2));
         
         //draws tiles from tile map
-        for(int index = 0; index < map.length; index++){
-          for(int i = 0; i < map[0].length; i++){
-                Tile temp = map[index][i];
-                //skip if null
-                if(temp != null) {
-                    g.drawImage(temp.getImage(),tileSize*index,tileSize*i,tileSize,tileSize,null);
-                }
-            }
-        }
+        map.draw(g);
+        map.drawGrid(g);
         
        
         //draw enemies
@@ -48,7 +41,7 @@ public class GameGraphics extends JPanel
         
         //draw player
         
-        newDrawImage(g,player);
+        drawPlayer(g,player);
         
 
     }
@@ -66,10 +59,10 @@ public class GameGraphics extends JPanel
     private void drawPlayer(Graphics g, Base object) {
         Image image = object.getImage();
 
-        double x = (screenW/2)-(image.getWidth(null)/2);
-        double y = object.getY()-(image.getHeight(null)/2);
+        double x = (map.getRows()*tileSize/2)-(object.getWidth()/2)+(player.getX()/2);
+        double y = (map.getCols()*tileSize/2)-(object.getHeight()/2)+(player.getY()/2);
         
         //System.out.println(object.getWidth() + "," + object.getHeight());
-        g.drawImage(image,(int)(screenW/2),(int)y,object.getWidth(),object.getHeight(),null);
+        g.drawImage(image,(int)x,(int)y,object.getWidth(),object.getHeight(),null);
     }
 }

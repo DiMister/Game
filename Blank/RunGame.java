@@ -11,7 +11,7 @@ public class RunGame implements KeyListener
     GameGraphics graph;
     Container c1;
     
-    Tile[][] map;
+    Map map;
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     Player player;
     
@@ -19,9 +19,9 @@ public class RunGame implements KeyListener
     
     public RunGame()
     {
-        decodeFile("testLevel");
+        decodeFile("big");
         setupPanel();
-        player.playIdle();
+        new Thread(player).start();
         for(Enemy e : enemies) e.playIdle();
         update();
     }
@@ -87,8 +87,11 @@ public class RunGame implements KeyListener
             }
         }
         
-        String[] mapLines;
-        for(int index = 0;
+        String[] mapLines = new String[split];
+        for(int index = 0; index < split; index++){
+            mapLines[index] = lines.get(index);
+        }
+        map = new Map(mapLines);
         
         for(int index = split+1; index < split2; index++) {
             String line = lines.get(index);
@@ -147,13 +150,18 @@ public class RunGame implements KeyListener
             //w || up
             player.moveInput("Up");
         }
+        if(e.getKeyCode() == 32) {
+            //space || attack
+            player.stop();
+            player.attack();
+        }
     }
     
     @Override
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == 65 || e.getKeyCode() == 68 || e.getKeyCode() == 83 || e.getKeyCode() == 87) {
             //stop if any key released
-            player.moveInput("Stop");
+            player.stop();
         }
     }
     
