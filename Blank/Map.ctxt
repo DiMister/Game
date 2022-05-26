@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Map
+comment1.params=lines
+comment1.target=Map(java.lang.String[])
+comment2.params=car
+comment2.target=gameObjects.Tile\ findTile(char)
+comment3.params=
+comment3.target=int\ getRows()
+comment4.params=
+comment4.target=int\ getCols()
+comment5.params=
+comment5.target=int\ getLength()
+comment6.params=
+comment6.target=int\ getHeight()
+comment7.params=g
+comment7.target=void\ draw(java.awt.Graphics)
+comment8.params=g
+comment8.target=void\ drawGrid(java.awt.Graphics)
+numComments=9

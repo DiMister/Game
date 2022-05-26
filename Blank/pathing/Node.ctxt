@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.target=Node
+comment1.params=_walkable\ _x\ _y
+comment1.target=Node(boolean,\ int,\ int)
+comment2.params=
+comment2.target=boolean\ isWalkable()
+comment3.params=
+comment3.target=int\ getX()
+comment4.params=
+comment4.target=int\ getY()
+numComments=5
