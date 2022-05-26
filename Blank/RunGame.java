@@ -15,14 +15,16 @@ public class RunGame implements KeyListener
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     Player player;
     
-    int tileSize = 40;
     
     public RunGame()
     {
         decodeFile("big");
         setupPanel();
         new Thread(player).start();
-        for(Enemy e : enemies) e.playIdle();
+        for(Enemy e : enemies) {
+            new Thread(e).start();
+            e.startRandomMovement();
+        }
         update();
     }
     
@@ -51,7 +53,7 @@ public class RunGame implements KeyListener
         f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f1.setResizable(false);
 
-        graph = new GameGraphics(map,enemies,player,tileSize,ss);
+        graph = new GameGraphics(map,enemies,player,ss);
         graph.addKeyListener(this);
 
         c1 = f1.getContentPane();

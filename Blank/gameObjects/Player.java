@@ -64,7 +64,7 @@ public class Player extends Movement implements Runnable
                     images = FileMangement.createImageList("images/Player/run");
                     current = "runRight";
                     index = 0;
-                }else if(firction && !current.equals("idle")){
+                }else if(dirX == 0 && dirY == 0 && !current.equals("idle")){
                     images = FileMangement.createImageList("images/Player/idle");
                     current = "idle";
                     index = 0;
@@ -74,7 +74,7 @@ public class Player extends Movement implements Runnable
                     images = FileMangement.createImageListFlip("images/Player/run");
                     current = "runLeft";
                     index = 0;
-                }else if(firction && !current.equals("idle")){
+                }else if(dirX == 0 && dirY == 0 && !current.equals("idle")){
                     images = FileMangement.createImageListFlip("images/Player/idle");
                     current = "idle";
                     index = 0;

@@ -44,21 +44,4 @@ public class Base
         return image;
     }
 
-    public Thread setupAnamationThread(String imageDrectory) {
-        Thread result = new Thread(){
-            public void run(){
-                Image[] images = FileMangement.createImageList(imageDrectory);
-                int index = 0;
-                while(true){
-                    try{TimeUnit.MILLISECONDS.sleep(100);}
-                    catch (InterruptedException ie){ie.printStackTrace();}
-                    
-                    setImage(images[index]);
-                    index++;
-                    if(index >= images.length) index = 0;
-                }
-            }
-        };
-        return result;
-    }
 }

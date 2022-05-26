@@ -8,15 +8,14 @@ public class GameGraphics extends JPanel
     Map map;
     ArrayList<Enemy> enemies;
     Player player;
-    int tileSize,screenH,screenW;
+    int screenH,screenW;
     
-    public GameGraphics(Map tiles, ArrayList<Enemy> enemies, Player player, int tileSize, Dimension ss)
+    public GameGraphics(Map tiles, ArrayList<Enemy> enemies, Player player, Dimension ss)
     {
         //tommyinit
         map = tiles;
         this.enemies = enemies;
         this.player = player;
-        this.tileSize = tileSize;
         screenH = ss.height;
         screenW = ss.width;
         setBackground(Color.black);
