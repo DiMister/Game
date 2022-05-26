@@ -152,6 +152,7 @@ public class RunGame implements KeyListener
         }
         if(e.getKeyCode() == 32) {
             //space || attack
+            player.stop();
             player.attack();
         }
     }
