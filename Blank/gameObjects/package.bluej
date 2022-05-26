@@ -1,4 +1,16 @@
 #BlueJ package file
+dependency1.from=Base
+dependency1.to=FileMangement
+dependency1.type=UsesDependency
+dependency2.from=FileMangement
+dependency2.to=Enemy
+dependency2.type=UsesDependency
+dependency3.from=FileMangement
+dependency3.to=Tile
+dependency3.type=UsesDependency
+dependency4.from=Player
+dependency4.to=FileMangement
+dependency4.type=UsesDependency
 objectbench.height=93
 objectbench.width=760
 package.divider.horizontal=0.6
@@ -9,7 +21,7 @@ package.editor.x=121
 package.editor.y=69
 package.frame.height=600
 package.frame.width=800
-package.numDependencies=0
+package.numDependencies=4
 package.numTargets=12
 package.showExtends=true
 package.showUses=true
