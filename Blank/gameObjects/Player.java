@@ -30,6 +30,7 @@ public class Player extends Movement implements Runnable
             dirX = speed;
             facingRight = true;
         }
+
         firction = false;
     }
 
@@ -49,29 +50,38 @@ public class Player extends Movement implements Runnable
                 else images = FileMangement.createImageListFlip("images/Player/Attack");
                 index = 0;
                 current = "attack";
-                while(index < images.length) {
-                    try{TimeUnit.MILLISECONDS.sleep(100);}
+                while(index < images.length-1) {
+                    try{TimeUnit.MILLISECONDS.sleep(50);}
                     catch (InterruptedException ie){ie.printStackTrace();}
-                    
+                    dirX = 0;
+                    dirY = 0;
                     setImage(images[index]);
                     index++;
                 }
                 attacking = false;
-            }else if(Math.abs(dirX) > 0.1 && !current.equals("run")){
-                if(facingRight)images = FileMangement.createImageList("images/Player/Run");
-                else images = FileMangement.createImageListFlip("images/Player/Run");
-                current = "run";
-                index = 0;
-            }else if(!current.equals("idle") && firction) {
-                if(facingRight)images = FileMangement.createImageList("images/Player/idle");
-                else images = FileMangement.createImageListFlip("images/Player/idle");
-                current = "idle";
-                index = 0;
+            }else if(facingRight){
+                if((dirX > 0 || Math.abs(dirY) > 0) && !current.equals("runRight")){
+                    images = FileMangement.createImageList("images/Player/run");
+                    current = "runRight";
+                    index = 0;
+                }else if(firction && !current.equals("idle")){
+                    images = FileMangement.createImageList("images/Player/idle");
+                    current = "idle";
+                    index = 0;
+                }
+            }else{
+                 if((dirX < 0 || Math.abs(dirY) > 0) && !current.equals("runLeft")){
+                    images = FileMangement.createImageListFlip("images/Player/run");
+                    current = "runLeft";
+                    index = 0;
+                }else if(firction && !current.equals("idle")){
+                    images = FileMangement.createImageListFlip("images/Player/idle");
+                    current = "idle";
+                    index = 0;
+                }
             }
             
-            try{
-                setImage(images[index]);
-            }catch(ArrayIndexOutOfBoundsException e){e.printStackTrace();}
+            setImage(images[index]);
             index++;
             if(index >= images.length) index = 0;
         }

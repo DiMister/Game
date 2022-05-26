@@ -31,10 +31,6 @@ public class Map
     
     public int getCols() {return map[0].length;}
     
-    public int getLength() {return tileSize*map[0].length;}
-    
-    public int getHeight() {return tileSize*map.length;}
-    
     public void draw(Graphics g) {
         for(int index = 0; index < map.length; index++){
           for(int i = 0; i < map[0].length; i++){
