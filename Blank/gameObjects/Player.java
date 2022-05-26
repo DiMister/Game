@@ -30,7 +30,6 @@ public class Player extends Movement implements Runnable
             dirX = speed;
             facingRight = true;
         }
-
         firction = false;
     }
 
