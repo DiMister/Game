@@ -31,7 +31,7 @@ public class Map
     
     public int getCols() {return map[0].length;}
     
-    public int getLength() {return tileSize*map[0].length;}
+    public int getWidth() {return tileSize*map[0].length;}
     
     public int getHeight() {return tileSize*map.length;}
     

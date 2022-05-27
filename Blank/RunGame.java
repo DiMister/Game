@@ -15,14 +15,17 @@ public class RunGame implements KeyListener
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     Player player;
     
-    int tileSize = 40;
     
     public RunGame()
     {
+        System.out.print('\u000C');
         decodeFile("big");
         setupPanel();
         new Thread(player).start();
-        for(Enemy e : enemies) e.playIdle();
+        for(Enemy e : enemies) {
+            new Thread(e).start();
+            e.startRandomMovement();
+        }
         update();
     }
     
@@ -36,7 +39,12 @@ public class RunGame implements KeyListener
                 runner.sleep(5); 
             }
             catch(InterruptedException e) {} 
-
+            
+            for(Enemy e : enemies) {
+                e.move();
+                if(player.isColliding(e))
+                    System.out.println("hit");
+            }
             player.move();
             graph.repaint();
             graph.requestFocus();
@@ -51,7 +59,7 @@ public class RunGame implements KeyListener
         f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f1.setResizable(false);
 
-        graph = new GameGraphics(map,enemies,player,tileSize,ss);
+        graph = new GameGraphics(map,enemies,player,ss);
         graph.addKeyListener(this);
 
         c1 = f1.getContentPane();
@@ -136,25 +144,21 @@ public class RunGame implements KeyListener
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == 65) {
             //a || left
-            player.moveInput("Left");
+            player.moveInput(3);
         }
         if(e.getKeyCode() == 68) {
             //d || right
-            player.moveInput("Right");
+            player.moveInput(1);
         }
         if(e.getKeyCode() == 83) {
             //s || down
-            player.moveInput("Down");
+            player.moveInput(2);
         }
         if(e.getKeyCode() == 87) {
             //w || up
-            player.moveInput("Up");
+            player.moveInput(0);
         }
-        if(e.getKeyCode() == 32) {
-            //space || attack
-            player.stop();
-            player.attack();
-        }
+        
     }
     
     @Override
@@ -166,5 +170,10 @@ public class RunGame implements KeyListener
     }
     
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+        if(e.getKeyChar() == 'e') {
+            //e || attack
+            player.attack();
+        }
+    }
 }

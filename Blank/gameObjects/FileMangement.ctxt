@@ -10,4 +10,6 @@ comment4.params=drectory
 comment4.target=java.awt.Image[]\ createImageListFlip(java.lang.String)
 comment5.params=fileName\ row\ col
 comment5.target=void\ splitImage(java.lang.String,\ int,\ int)
-numComments=6
+comment6.params=image
+comment6.target=java.awt.image.BufferedImage\ trim(java.awt.image.BufferedImage)
+numComments=7

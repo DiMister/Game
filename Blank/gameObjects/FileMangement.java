@@ -2,14 +2,12 @@ package gameObjects;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.awt.Image;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
+import java.awt.image.*;
 
 public class FileMangement
 {
@@ -76,10 +74,12 @@ public class FileMangement
         Image[] result = new Image[fileNames.length];
         for(int index = 0; index < fileNames.length; index++) {
             try{
-                //System.out.println(fileNames[index]);
                 FileInputStream fis = new FileInputStream(drectory+"/"+fileNames[index]);
                 Image image = ImageIO.read(fis);
-
+                
+                //System.out.print(fileNames[index]+": ");
+                //trim(ImageIO.read(new File(drectory+"/"+fileNames[index])));
+                
                 result[index] = image;
             }
             catch (IOException ex){System.out.println("Error with creating image list");}
@@ -111,7 +111,6 @@ public class FileMangement
     }
 
     public static void splitImage(String fileName, int row, int col) {
-
         File file = new File(fileName); // I have bear.jpg in my working directory
         BufferedImage image = null;
         try{
@@ -146,6 +145,39 @@ public class FileMangement
             System.out.println("Mini images created");
         }
         catch (IOException ex){System.out.println("Error with split image");}
+    }
+
+    public static BufferedImage trim(BufferedImage image) {
+        int minY = 0, maxY = 0, minX = Integer.MAX_VALUE, maxX = 0;
+        boolean isBlank, minYIsDefined = false;
+        Raster raster = image.getRaster();
+        
+        for (int y = 0; y < image.getHeight(); y++) {
+            isBlank = true;
+
+            for (int x = 0; x < image.getWidth(); x++) {
+                //Change condition to (raster.getSample(x, y, 3) != 0) 
+                //for better performance
+                if (raster.getPixel(x, y, (int[]) null)[3] != 0) {
+                    isBlank = false;
+
+                    if (x < minX) minX = x;
+                    if (x > maxX) maxX = x;
+                }
+            }
+
+            if (!isBlank) {
+                if (!minYIsDefined) {
+                    minY = y;
+                    minYIsDefined = true;
+                } else {
+                    if (y > maxY) maxY = y;
+                }
+            }
+        }
+        
+        System.out.println(minX+","+minY+" . "+ (maxX - minX + 1)+","+ (maxY - minY + 1));
+        return image.getSubimage(minX, minY, maxX - minX + 1, maxY - minY + 1);
     }
 }
 
