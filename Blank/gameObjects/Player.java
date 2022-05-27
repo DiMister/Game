@@ -17,19 +17,22 @@ public class Player extends Moving implements Runnable
         attacking = true;
     }
 
-    public void moveInput(String dir) {
+    public void moveInput(int dir) {
+        //0 is up, 1 is right, 2 is down, 3 is left
         
-        
-        if(dir.equals("Up")){
+        if(dir== 0){
+            if (dirX==0)
             dirY = -speed;
-        }else if(dir.equals("Down")){
+        }
+        
+        if(dir == 2){
             dirY = speed;
-        }else if(dir.equals("Left")){
+        }else if(dir == 3){
             dirX = -speed;
             facingRight = false;
             boundingBox[0] = 88; //calulated with (int)MoreMath.reverse(boundingBox[0]+boundingBox[2],0,getWidth());
             
-        }else if(dir.equals("Right")){
+        }else if(dir == 1){
             dirX = speed;
             facingRight = true;
             boundingBox[0] = 56; 

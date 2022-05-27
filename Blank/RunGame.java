@@ -144,19 +144,19 @@ public class RunGame implements KeyListener
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == 65) {
             //a || left
-            player.moveInput("Left");
+            player.moveInput(3);
         }
         if(e.getKeyCode() == 68) {
             //d || right
-            player.moveInput("Right");
+            player.moveInput(1);
         }
         if(e.getKeyCode() == 83) {
             //s || down
-            player.moveInput("Down");
+            player.moveInput(2);
         }
         if(e.getKeyCode() == 87) {
             //w || up
-            player.moveInput("Up");
+            player.moveInput(0);
         }
         
     }
