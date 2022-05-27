@@ -11,7 +11,7 @@ public class Enemy extends Movement implements Runnable
     
     public Enemy(int x,int y)
     {
-        super(x,y,200,Toolkit.getDefaultToolkit().getImage("images/Skeleton Enemy/idle/idle1.png"),1,1);
+        super(x,y,200,1,new int[]{1,1,200,200},1);
     }
     
     public void startRandomMovement() {
@@ -20,17 +20,24 @@ public class Enemy extends Movement implements Runnable
                 while(true){
                     try{TimeUnit.SECONDS.sleep(3);}
                     catch(InterruptedException e) {} 
+                    dirX=0;
+                    dirY=0;
                     
                     int randomDir = (int)(Math.random() * 4);
-                    if(randomDir == 0) dirX = speed;
-                    else if(randomDir == 0) dirX = -speed;
-                    else if(randomDir == 0) dirY = speed;
-                    else if(randomDir == 0) dirY = -speed;
+                    if(randomDir == 0) {
+                        dirX = speed;
+                        facingRight = true;
+                    }else if(randomDir == 1) {
+                        dirX = -speed;
+                        facingRight = false;
+                    }else if(randomDir == 2) dirY = speed;
+                    else if(randomDir == 3) dirY = -speed;
                     randomDir = (int)(Math.random() * 5);
                     if(randomDir == 0) attacking = true;
                 }
             }
         };
+        sort.start();
     }
     
     public String toString(){return "s-"+getX()+"-"+getY();}

@@ -26,7 +26,7 @@ public class GameGraphics extends JPanel
     { 
         super.paint(g); 
         //displaces entire graph (for fun put this in front of super.paint(g)
-        g.translate((screenW/2)-(map.getRows()*tileSize/2)-(player.getX()/2),(screenH/2)-(map.getCols()*tileSize/2)-50-(player.getY()/2));
+        g.translate((screenW/2)-(player.getX()),(screenH/2)-50-(player.getY()));
         
         //draws tiles from tile map
         map.draw(g);
@@ -35,12 +35,16 @@ public class GameGraphics extends JPanel
        
         //draw enemies
         for(Enemy e : enemies){
-            newDrawImage(g,e);
+            e.drawImage(g);
+            e.drawBoundingBox(g);
+            e.drawImageArea(g);
         }
         
         //draw player
         
-        drawPlayer(g,player);
+        player.drawImage(g);
+        player.drawBoundingBox(g);
+        player.drawImageArea(g);
         
 
     }
@@ -54,14 +58,6 @@ public class GameGraphics extends JPanel
         //System.out.println(object.getWidth() + "," + object.getHeight());
         g.drawImage(image,(int)x,(int)y,object.getWidth(),object.getHeight(),null);
     }
-
-    private void drawPlayer(Graphics g, Base object) {
-        Image image = object.getImage();
-
-        double x = (map.getRows()*tileSize-object.getWidth()+player.getX())/2;
-        double y = (map.getCols()*tileSize-object.getHeight()+player.getY())/2;
-        
-        //System.out.println(x + "," + y);
-        g.drawImage(image,(int)x,(int)y,object.getWidth(),object.getHeight(),null);
-    }
+    
+    
 }

@@ -18,7 +18,8 @@ public class RunGame implements KeyListener
     
     public RunGame()
     {
-        decodeFile("big");
+        System.out.print('\u000C');
+        decodeFile("testLevel");
         setupPanel();
         new Thread(player).start();
         for(Enemy e : enemies) {
@@ -38,7 +39,12 @@ public class RunGame implements KeyListener
                 runner.sleep(5); 
             }
             catch(InterruptedException e) {} 
-
+            
+            for(Enemy e : enemies) {
+                e.move();
+                if(player.isColliding(e))
+                    System.out.println("hit");
+            }
             player.move();
             graph.repaint();
             graph.requestFocus();
@@ -152,10 +158,7 @@ public class RunGame implements KeyListener
             //w || up
             player.moveInput("Up");
         }
-        if(e.getKeyCode() == 32) {
-            //space || attack
-            player.attack();
-        }
+        
     }
     
     @Override
@@ -167,5 +170,10 @@ public class RunGame implements KeyListener
     }
     
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+        if(e.getKeyChar() == 'e') {
+            //e || attack
+            player.attack();
+        }
+    }
 }

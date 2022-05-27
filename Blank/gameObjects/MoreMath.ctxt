@@ -2,4 +2,6 @@
 comment0.target=MoreMath
 comment1.params=x\ oldMin\ oldMax\ newMin\ newMax
 comment1.target=double\ map(double,\ double,\ double,\ double,\ double)
-numComments=2
+comment2.params=num\ min\ max
+comment2.target=double\ reverse(double,\ double,\ double)
+numComments=3

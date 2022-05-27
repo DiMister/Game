@@ -6,4 +6,7 @@ public class MoreMath
         return (((x - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
     }
     
+    public static double reverse(double num, double min, double max) {
+        return (max + min) - num;
+    }   
 }

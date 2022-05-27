@@ -2,14 +2,12 @@ package gameObjects;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.awt.Image;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
+import java.awt.image.*;
 
 public class FileMangement
 {
@@ -50,7 +48,7 @@ public class FileMangement
         catch(IOException ex) {}
     }
 
-    public static Tile[][] readMapFile(String fileName) {
+    public static ArrayList<String> readFile(String fileName) {
         ArrayList<String> lines = new ArrayList<String>();
 
         try{
@@ -65,7 +63,6 @@ public class FileMangement
             br.close();
         }
         catch (IOException ex){}
-<<<<<<<< HEAD:Blank/gameObjects/FileMangement.java
 
         return lines;
     }
@@ -77,10 +74,12 @@ public class FileMangement
         Image[] result = new Image[fileNames.length];
         for(int index = 0; index < fileNames.length; index++) {
             try{
-                //System.out.println(fileNames[index]);
                 FileInputStream fis = new FileInputStream(drectory+"/"+fileNames[index]);
                 Image image = ImageIO.read(fis);
-
+                
+                //System.out.print(fileNames[index]+": ");
+                //trim(ImageIO.read(new File(drectory+"/"+fileNames[index])));
+                
                 result[index] = image;
             }
             catch (IOException ex){System.out.println("Error with creating image list");}
@@ -111,42 +110,7 @@ public class FileMangement
         return result;
     }
 
-========
-        
-        int split = lines.size();
-        for(int index = 0; index < lines.size(); index++) {
-            if(lines.get(index) == "") split = index;
-        }
-        
-        //System.out.println(lines);
-        Tile[][] map = new Tile[split][lines.get(0).length()];
-        
-        //reads each char and finds the tile that corsonds to it
-        for(int index = 0; index < map.length; index++){
-          for(int i = 0; i < map[0].length; i++){
-                map[index][i] = findTile(lines.get(index).charAt(i));
-            }
-        }
-        
-        for(int index = split; index < lines.size(); index++) {
-            
-        }
-        
-        return map;
-    }
-    
-    private static Tile findTile(char car) {
-        if(car == 'n') return new NormalTile();
-        if(car == 'w') return new WallTile();
-        if(car == 'l') return new LavaTile();
-        if(car == 'v') return new WaterTile();
-        if(car == 's') return new SpikeTile(1);
-        return null;
-    }
-    
->>>>>>>> BlackPowderPirate-patch-1:Blank/LevelEditor/FileMangement.java
     public static void splitImage(String fileName, int row, int col) {
-
         File file = new File(fileName); // I have bear.jpg in my working directory
         BufferedImage image = null;
         try{
@@ -181,6 +145,39 @@ public class FileMangement
             System.out.println("Mini images created");
         }
         catch (IOException ex){System.out.println("Error with split image");}
+    }
+
+    public static BufferedImage trim(BufferedImage image) {
+        int minY = 0, maxY = 0, minX = Integer.MAX_VALUE, maxX = 0;
+        boolean isBlank, minYIsDefined = false;
+        Raster raster = image.getRaster();
+        
+        for (int y = 0; y < image.getHeight(); y++) {
+            isBlank = true;
+
+            for (int x = 0; x < image.getWidth(); x++) {
+                //Change condition to (raster.getSample(x, y, 3) != 0) 
+                //for better performance
+                if (raster.getPixel(x, y, (int[]) null)[3] != 0) {
+                    isBlank = false;
+
+                    if (x < minX) minX = x;
+                    if (x > maxX) maxX = x;
+                }
+            }
+
+            if (!isBlank) {
+                if (!minYIsDefined) {
+                    minY = y;
+                    minYIsDefined = true;
+                } else {
+                    if (y > maxY) maxY = y;
+                }
+            }
+        }
+        
+        System.out.println(minX+","+minY+" . "+ (maxX - minX + 1)+","+ (maxY - minY + 1));
+        return image.getSubimage(minX, minY, maxX - minX + 1, maxY - minY + 1);
     }
 }
 

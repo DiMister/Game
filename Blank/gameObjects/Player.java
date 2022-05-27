@@ -7,9 +7,10 @@ public class Player extends Movement implements Runnable
 {
     //private Thread idle, attack;
     private boolean facingRight = true, attacking = false;
+    
     public Player(int x, int y)
     {
-        super(x,y,200,Toolkit.getDefaultToolkit().getImage("images/Player/idle/Warrior_Idle_1.png"),0.6875,4);       
+        super(x,y,200,0.6875,new int[]{56,33,56,101},4);       
     }
     
     public void attack() {
@@ -26,12 +27,18 @@ public class Player extends Movement implements Runnable
         }else if(dir.equals("Left")){
             dirX = -speed;
             facingRight = false;
+            boundingBox[0] = 88; //calulated with (int)MoreMath.reverse(boundingBox[0]+boundingBox[2],0,getWidth());
+            
         }else if(dir.equals("Right")){
             dirX = speed;
             facingRight = true;
+            boundingBox[0] = 56; 
+            
         }
         firction = false;
     }
+    
+
 
     public String toString(){return "p-"+getX()+"-"+getY();}
 
@@ -79,7 +86,6 @@ public class Player extends Movement implements Runnable
                     index = 0;
                 }
             }
-            
             setImage(images[index]);
             index++;
             if(index >= images.length) index = 0;
