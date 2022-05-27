@@ -2,12 +2,12 @@ package gameObjects;
 import java.awt.Image;
 
 
-public class Movement extends Base 
+public class Moving extends ImageObject 
 {
     protected double speed, dirX=0, dirY=0;
     protected boolean firction = false;
     
-    public Movement(int x, int y, int size, double ratio, int[] boundingBox, double speed)
+    public Moving(int x, int y, int size, double ratio, int[] boundingBox, double speed)
     {
         super(x,y,size,ratio,boundingBox);
         this.speed = speed;
@@ -28,4 +28,6 @@ public class Movement extends Base
     public void stop() {
         firction = true;
     }
+    
+
 }

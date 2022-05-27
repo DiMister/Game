@@ -4,20 +4,31 @@ import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 
-public class Base
+public class ImageObject
 {
     protected int x,y,size; 
     protected double ratio;
     protected Image image;
     protected int[] boundingBox;
     
-    public Base(int x, int y, int size, double ratio, int[] boundingBox)
+    public ImageObject(int x, int y, int size, double ratio, int[] boundingBox)
     {
+        //constor for moving objects much more complex
         this.x = x;
         this.y = y;
         this.size = size;
         this.ratio = ratio;
         this.boundingBox = boundingBox;
+    }
+    
+    public ImageObject(int x, int y, Image image) {
+        //constor for static objects tried to simplfy as much as possable
+        this.x = x;
+        this.y = y;
+        this.image = image;
+        size = image.getWidth(null)*2;
+        ratio = image.getHeight(null)/image.getWidth(null);
+        boundingBox = new int[]{x,y,image.getWidth(null),image.getHeight(null)};
     }
     
     public void setImage(Image image) {
@@ -77,7 +88,7 @@ public class Base
     
     public int getColWidth() {return boundingBox[2];}
 
-    public boolean isColliding(Base other) {
+    public boolean isColliding(ImageObject other) {
         boolean xLine = false, yLine = false;
         
         if ((other.getX()-other.getColWidth()/2 > x-getColWidth()/2 &&  other.getX()-other.getColWidth()/2 < x+getColWidth()/2) ||

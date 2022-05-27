@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Moving
+comment1.params=x\ y\ size\ ratio\ boundingBox\ speed
+comment1.target=Moving(int,\ int,\ int,\ double,\ int[],\ double)
+comment2.params=
+comment2.target=void\ move()
+comment3.params=
+comment3.target=void\ stop()
+numComments=4

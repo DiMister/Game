@@ -3,7 +3,7 @@ import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 
-public class Player extends Movement implements Runnable
+public class Player extends Moving implements Runnable
 {
     //private Thread idle, attack;
     private boolean facingRight = true, attacking = false;
@@ -39,7 +39,7 @@ public class Player extends Movement implements Runnable
     }
     
 
-
+    @Override
     public String toString(){return "p-"+getX()+"-"+getY();}
 
     @Override

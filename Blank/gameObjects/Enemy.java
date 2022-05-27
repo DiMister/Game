@@ -4,14 +4,14 @@ import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 
-public class Enemy extends Movement implements Runnable
+public class Enemy extends Moving implements Runnable
 {
     boolean facingRight = true;
     boolean attacking = false;
     
     public Enemy(int x,int y)
     {
-        super(x,y,200,1,new int[]{1,1,200,200},1);
+        super(x,y,200,1,new int[]{80,50,40,100},1);
     }
     
     public void startRandomMovement() {
@@ -40,6 +40,7 @@ public class Enemy extends Movement implements Runnable
         sort.start();
     }
     
+    @Override
     public String toString(){return "s-"+getX()+"-"+getY();}
     
     @Override

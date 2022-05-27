@@ -19,7 +19,7 @@ public class RunGame implements KeyListener
     public RunGame()
     {
         System.out.print('\u000C');
-        decodeFile("testLevel");
+        decodeFile("big");
         setupPanel();
         new Thread(player).start();
         for(Enemy e : enemies) {
