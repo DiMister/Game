@@ -215,7 +215,7 @@ public class CreateLevel implements ActionListener, MouseMotionListener, ChangeL
             /**JOptionPane to get name of level*/
             String name = (String)JOptionPane.showInputDialog(f1,"Enter name of level","Save",JOptionPane.INFORMATION_MESSAGE);
 
-            FileMangement.saveFileJSON(map,enemies,playerSpawn,name);
+            FileMangement.saveFileJSON(map,enemies,objects,playerSpawn,name);
         }
         if(event.getSource() == snap) {
             if(snapToGrid) snapToGrid = false;

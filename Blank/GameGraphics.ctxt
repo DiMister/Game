@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=GameGraphics
-comment1.params=tiles\ enemies\ player\ ss
-comment1.target=GameGraphics(gameObjects.Map,\ java.util.ArrayList,\ gameObjects.Player,\ java.awt.Dimension)
+comment1.params=tiles\ enemies\ objects\ player\ ss
+comment1.target=GameGraphics(gameObjects.Map,\ java.util.ArrayList,\ java.util.ArrayList,\ gameObjects.Player,\ java.awt.Dimension)
 comment2.params=g
 comment2.target=void\ paint(java.awt.Graphics)
 numComments=3

@@ -8,17 +8,24 @@ public class StaticObject extends ImageObject
 {
     String type;
     int id;
+    
     public StaticObject(int x,int y,String type,int id) 
     {
         super(x,y,Toolkit.getDefaultToolkit().getImage("images/Objects/"+type+"/"+id+".png"));
         this.type = type;
-        this.id = id;
-        //if(Toolkit.getDefaultToolkit().getImage("images/Objects/"+type+"/"+id+".png") != null) System.out.println("Image Found!");
-        //System.out.println(getWidth()+","+getHeight());
+
+    }
+    
+    public String getType() {
+        return type;
+    }
+    
+    public int getID() {
+        return id;
     }
     
     @Override
-    public String toString(){return "\""+type.substring(0,1)+id+"\"";}
+    public String toString(){return "\""+type+"-"+id+"\"";}
 
 
 }

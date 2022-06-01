@@ -11,6 +11,8 @@ public class Player extends Moving implements Runnable
     public Player(int x, int y)
     {
         super(x,y,200,0.6875,new int[]{56,33,56,101},4);       
+        Thread anamator = new Thread(this);
+        anamator.start();
     }
     
     public void attack() {

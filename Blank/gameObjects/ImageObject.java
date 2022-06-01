@@ -2,7 +2,7 @@ package gameObjects;
 
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
-
+import java.io.IOException;
 
 public class ImageObject
 {
@@ -10,7 +10,7 @@ public class ImageObject
     protected double ratio;
     protected Image image;
     protected int[] boundingBox;
-    
+
     public ImageObject(int x, int y, int size, double ratio, int[] boundingBox)
     {
         //constor for moving objects much more complex
@@ -20,57 +20,67 @@ public class ImageObject
         this.ratio = ratio;
         this.boundingBox = boundingBox;
     }
-    
+
     public ImageObject(int x, int y, Image image) {
         //constor for static objects tried to simplfy as much as possable
+        
+        //this is to wait for image to load fully so getWidth isn't null
+        MediaTracker tracker = new MediaTracker(new Component(){}); // not sure if this is the right thing to do.
+        tracker.addImage(image, 0);
+        try {
+            tracker.waitForAll();
+        } catch (InterruptedException e) {e.printStackTrace();}
+        
         this.x = x;
         this.y = y;
         this.image = image;
         size = image.getWidth(null)*2;
         ratio = image.getHeight(null)/(double)image.getWidth(null);
+        if(size == -2) size = 100;
+        System.out.println(ratio+" "+size);
         boundingBox = new int[]{0,0,getWidth(),getHeight()};
     }
-    
+
     public void setImage(Image image) {
         this.image = image;
     }
-    
+
     public int getX() {
         return x;
     }
-    
+
     public int getY() {
         return y;
     }
-    
+
     public int getWidth() {
         return size;
     }
-    
+
     public int getHeight() {
         return (int)(size*ratio);
     }
-    
+
     public Image getImage() {
         return image;
     }
-    
+
     public void drawBoundingBox(Graphics g) {
         g.setColor(Color.black);
-        
+
         double X = x-(boundingBox[2]/2);
         double Y = y-(boundingBox[3]/2);
-        
+
         g.fillOval(x-5,y-5,10,10);
         g.drawRect((int)X,(int)Y,boundingBox[2],boundingBox[3]);
     }
-    
+
     public void drawImageArea(Graphics g) {
         g.setColor(Color.red);
-        
+
         double X = x-boundingBox[0]-(boundingBox[2]/2);
         double Y = y-boundingBox[1]-(boundingBox[3]/2);
-        
+
         g.drawRect((int)X,(int)Y,getWidth(),getHeight());
     }
 
@@ -80,25 +90,25 @@ public class ImageObject
 
         double X = x-boundingBox[0]-(boundingBox[2]/2);
         double Y = y-boundingBox[1]-(boundingBox[3]/2);
-        
+
         g.drawImage(image,(int)X,(int)Y,getWidth(),getHeight(),null);
     }
-    
+
     public int getColHeight() {return boundingBox[3];}
-    
+
     public int getColWidth() {return boundingBox[2];}
 
     public boolean isColliding(ImageObject other) {
         boolean xLine = false, yLine = false;
-        
+
         if ((other.getX()-other.getColWidth()/2 > x-getColWidth()/2 &&  other.getX()-other.getColWidth()/2 < x+getColWidth()/2) ||
-            (other.getX()+other.getColWidth()/2 > x-getColWidth()/2 &&  other.getX()+other.getColWidth()/2 < x+getColWidth()/2))
+        (other.getX()+other.getColWidth()/2 > x-getColWidth()/2 &&  other.getX()+other.getColWidth()/2 < x+getColWidth()/2))
             xLine = true;
-        
+
         if ((other.getY()-other.getColHeight()/2 > y-getColHeight()/2 &&  other.getY()-other.getColHeight()/2 < y+getColHeight()/2) ||
-            (other.getY()+other.getColHeight()/2 > y-getColHeight()/2 &&  other.getY()+other.getColHeight()/2 < y+getColHeight()/2))
+        (other.getY()+other.getColHeight()/2 > y-getColHeight()/2 &&  other.getY()+other.getColHeight()/2 < y+getColHeight()/2))
             yLine = true;
-            
+
         return xLine && yLine;
     }
 }

@@ -20,6 +20,7 @@ public class RunGame implements KeyListener
 
     Map map;
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+    ArrayList<StaticObject> objects = new ArrayList<StaticObject>();
     Player player;
 
     public RunGame()
@@ -27,11 +28,7 @@ public class RunGame implements KeyListener
         System.out.print('\u000C');
         decodeJSON("test");
         setupPanel();
-        new Thread(player).start();
-        for(Enemy e : enemies) {
-            new Thread(e).start();
-            e.startRandomMovement();
-        }
+
         update();
     }
 
@@ -48,8 +45,6 @@ public class RunGame implements KeyListener
 
             for(Enemy e : enemies) {
                 e.move();
-                if(player.isColliding(e))
-                    System.out.println("hit");
             }
             player.move();
             graph.repaint();
@@ -65,7 +60,7 @@ public class RunGame implements KeyListener
         f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f1.setResizable(false);
 
-        graph = new GameGraphics(map,enemies,player,ss);
+        graph = new GameGraphics(map,enemies,objects,player,ss);
         graph.addKeyListener(this);
 
         c1 = f1.getContentPane();
@@ -81,7 +76,7 @@ public class RunGame implements KeyListener
     private void decodeJSON(String fileName) {
         FileReader reader;
         try{
-            reader = new FileReader(fileName+".json");
+            reader = new FileReader("saves/"+fileName+".json");
             JSONParser jsonParser = new JSONParser();
             Object obj = jsonParser.parse(reader);
             JSONObject jsonObject = (JSONObject)obj;
@@ -101,6 +96,21 @@ public class RunGame implements KeyListener
                 long x = (long)enemy.get("x");
                 long y = (long)enemy.get("y");
                 enemies.add(findEnemy(type,(int)x,(int)y));
+            }
+            
+            JSONArray sObject = (JSONArray)jsonObject.get("Objects");
+            iterator = sObject.iterator();
+            while(iterator.hasNext()) {
+                JSONObject object = (JSONObject)iterator.next();
+                String type = (String)object.get("type");
+                //make first letter always captital
+                type = type.substring(0,1).toUpperCase() + type.substring(1);
+                System.out.print(type);
+                int ID = (int)(long)object.get("ID");
+                System.out.println(ID);
+                int x = (int)(long)object.get("x");
+                int y = (int)(long)object.get("y");
+                objects.add(new StaticObject(x,y,type,ID));
             }
             
             JSONObject sPlayer = (JSONObject)jsonObject.get("Player");

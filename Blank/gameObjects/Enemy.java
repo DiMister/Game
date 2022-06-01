@@ -12,6 +12,9 @@ public class Enemy extends Moving implements Runnable
     public Enemy(int x,int y)
     {
         super(x,y,200,1,new int[]{80,50,40,100},1);
+        Thread anamator = new Thread(this);
+        anamator.start();
+        startRandomMovement();
     }
     
     public void startRandomMovement() {

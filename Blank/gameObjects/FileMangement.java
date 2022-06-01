@@ -14,7 +14,7 @@ import java.awt.image.*;
 public class FileMangement
 {
 
-    public static void saveFileJSON(Tile[][] map, ArrayList<Enemy> enemies, Point playerSpawn, String fileName) {
+    public static void saveFileJSON(Tile[][] map, ArrayList<Enemy> enemies, ArrayList<StaticObject> objects, Point playerSpawn, String fileName) {
         JSONArray stringMap = new JSONArray();
 
         for(Tile[] row : map){
@@ -39,6 +39,17 @@ public class FileMangement
             enemyList.add(enemy);
         }
         
+        JSONArray objectList = new JSONArray();
+        
+        for(StaticObject obj : objects) {
+            JSONObject object = new JSONObject();
+            object.put("type",obj.getType());
+            object.put("ID",obj.getID());
+            object.put("x",obj.getX());
+            object.put("y",obj.getY());
+            objectList.add(object);
+        }
+        
         JSONObject player = new JSONObject();
         player.put("x",playerSpawn.x);
         player.put("y",playerSpawn.y);
@@ -47,9 +58,10 @@ public class FileMangement
         json.put("Map",stringMap);
         json.put("Enemies",enemyList);
         json.put("Player",player);
+        json.put("Objects",objectList);
         
         try {
-             FileWriter file = new FileWriter(fileName+".json");
+             FileWriter file = new FileWriter("saves/"+fileName+".json");
              file.write(json.toString());
              file.close();
              

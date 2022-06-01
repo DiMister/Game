@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=FileMangement
-comment1.params=map\ enemies\ playerSpawn\ fileName
-comment1.target=void\ saveFileJSON(Tile[][],\ java.util.ArrayList,\ java.awt.Point,\ java.lang.String)
+comment1.params=map\ enemies\ objects\ playerSpawn\ fileName
+comment1.target=void\ saveFileJSON(Tile[][],\ java.util.ArrayList,\ java.util.ArrayList,\ java.awt.Point,\ java.lang.String)
 comment2.params=drectory
 comment2.target=java.awt.Image[]\ createImageList(java.lang.String)
 comment3.params=drectory
