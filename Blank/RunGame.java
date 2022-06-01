@@ -28,7 +28,7 @@ public class RunGame implements KeyListener
         System.out.print('\u000C');
         decodeJSON("test");
         setupPanel();
-
+        
         update();
     }
 
@@ -105,9 +105,7 @@ public class RunGame implements KeyListener
                 String type = (String)object.get("type");
                 //make first letter always captital
                 type = type.substring(0,1).toUpperCase() + type.substring(1);
-                System.out.print(type);
                 int ID = (int)(long)object.get("ID");
-                System.out.println(ID);
                 int x = (int)(long)object.get("x");
                 int y = (int)(long)object.get("y");
                 objects.add(new StaticObject(x,y,type,ID));
@@ -132,28 +130,40 @@ public class RunGame implements KeyListener
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == 65) {
             //a || left
-            player.moveInput(3);
+            player.moveInput(4);
         }
         if(e.getKeyCode() == 68) {
             //d || right
-            player.moveInput(1);
+            player.moveInput(2);
         }
         if(e.getKeyCode() == 83) {
             //s || down
-            player.moveInput(2);
+            player.moveInput(3);
         }
         if(e.getKeyCode() == 87) {
             //w || up
-            player.moveInput(0);
+            player.moveInput(1);
         }
 
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode() == 65 || e.getKeyCode() == 68 || e.getKeyCode() == 83 || e.getKeyCode() == 87) {
-            //stop if any key released
-            player.stop();
+        if(e.getKeyCode() == 65) {
+            //a || left
+            player.moveInput(-4);
+        }
+        if(e.getKeyCode() == 68) {
+            //d || right
+            player.moveInput(-2);
+        }
+        if(e.getKeyCode() == 83) {
+            //s || down
+            player.moveInput(-3);
+        }
+        if(e.getKeyCode() == 87) {
+            //w || up
+            player.moveInput(-1);
         }
     }
 

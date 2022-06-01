@@ -7,9 +7,9 @@ public class Moving extends ImageObject
     protected double speed, dirX=0, dirY=0;
     protected boolean firction = false;
     
-    public Moving(int x, int y, int size, double ratio, int[] boundingBox, double speed)
+    public Moving(int x, int y, int size, Image image, int[] boundingBox, double speed)
     {
-        super(x,y,size,ratio,boundingBox);
+        super(x,y,size,image,boundingBox);
         this.speed = speed;
     }
 

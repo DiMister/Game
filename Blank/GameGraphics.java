@@ -32,7 +32,7 @@ public class GameGraphics extends JPanel
         
         //draws tiles from tile map
         map.draw(g);
-        map.drawGrid(g);
+        //map.drawGrid(g);
         
        
         //draw enemies

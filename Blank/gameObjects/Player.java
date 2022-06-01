@@ -8,11 +8,14 @@ public class Player extends Moving implements Runnable
 {
     //private Thread idle, attack;
     private boolean facingRight = true, attacking = false;
-    private double diaSpeed = Math.sqrt(Math.pow(speed, 2)/2);
-    
+    private double diaSpeed = Math.round(Math.sqrt(Math.pow(speed, 2)/2)*100)/100.0;
     public Player(int x, int y)
     {
-        super(x,y,200,0.6875,new int[]{56,33,56,101},4); 
+        super(x,y,200,Toolkit.getDefaultToolkit().getImage("images/Player/idle/Warrior_Idle_1"),new int[]{56,33,56,101},4); 
+        Thread anamator = new Thread(this);
+        anamator.start();
+        System.out.println(diaSpeed);
+
     }
     
     public void attack() {
@@ -21,6 +24,8 @@ public class Player extends Moving implements Runnable
 
     public void moveInput(int dir) {
         //1 is up, 2 is right, 3 is down, 4 is left
+        if(attacking) return;
+        
         boolean movingX, movingY;
         
         if (dirX != 0) movingX = true;
@@ -39,7 +44,7 @@ public class Player extends Moving implements Runnable
         
         if(dir == 2){
             facingRight = true;
-            boundingBox[0] = 56;
+            boundingBox.right();
             
             if (movingY) {
                 dirY = diaSpeed*(dirY/Math.abs(dirY));
@@ -58,7 +63,7 @@ public class Player extends Moving implements Runnable
         
         if(dir == 4){
             facingRight = false;
-            boundingBox[0] = 88;
+            boundingBox.left();
             
             if (movingY) {
                 dirY = diaSpeed*(dirY/Math.abs(dirY));
@@ -99,12 +104,13 @@ public class Player extends Moving implements Runnable
                 if(facingRight)images = FileMangement.createImageList("images/Player/Attack");
                 else images = FileMangement.createImageListFlip("images/Player/Attack");
                 index = 0;
+                dirX = 0;
+                dirY = 0;
                 current = "attack";
                 while(index < images.length-1) {
                     try{TimeUnit.MILLISECONDS.sleep(50);}
                     catch (InterruptedException ie){ie.printStackTrace();}
-                    dirX = 0;
-                    dirY = 0;
+                    
                     setImage(images[index]);
                     index++;
                 }

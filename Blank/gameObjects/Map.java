@@ -36,6 +36,7 @@ public class Map
     public int getWidth() {return tileSize*map[0].length;}
     
     public int getHeight() {return tileSize*map.length;}
+    
         
     public void draw(Graphics g) {
         for(int index = 0; index < map.length; index++){
