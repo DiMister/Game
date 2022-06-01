@@ -1,5 +1,7 @@
 package gameObjects;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
 import java.io.*;
 import java.util.ArrayList;
 import java.awt.*;
@@ -12,59 +14,49 @@ import java.awt.image.*;
 public class FileMangement
 {
 
-    public static void saveFile(Tile[][] map, ArrayList<Enemy> enemies, Point playerSpawn, String fileName) {
-        FileWriter fwriter; 
-        BufferedWriter bwriter;
+    public static void saveFileJSON(Tile[][] map, ArrayList<Enemy> enemies, Point playerSpawn, String fileName) {
+        JSONArray stringMap = new JSONArray();
 
-        File thefile = new File(fileName+".txt");  
-        try
-        {
-            fwriter = new FileWriter(thefile);
-            bwriter = new BufferedWriter(fwriter); 
-
-            //for each tile in tile map adds letter in a grid in file
-            for(Tile[] row : map){
-                String line = "";
-                for(Tile tile : row){
-                    if(tile != null){
-                        //all tile toString() print a letter
-                        line+= tile;
-                    }else
-                        line+= "-";
-
-                }
-                bwriter.write(line);
-                bwriter.newLine();
+        for(Tile[] row : map){
+            String line = "";
+            for(Tile tile : row){
+                if(tile != null){
+                    //all tile toString() print a letter
+                    line+= tile;
+                }else
+                    line+= "-";
             }
-            bwriter.newLine();
-            for(Enemy emy: enemies){
-                bwriter.write(""+emy);
-                bwriter.newLine();
-            }
-            bwriter.newLine();
-            bwriter.write("p-"+playerSpawn.x+"-"+playerSpawn.y);
-            bwriter.close();                       //Must always close the file when finished writing to it.  
+            stringMap.add(line);
         }
-        catch(IOException ex) {}
-    }
-
-    public static ArrayList<String> readFile(String fileName) {
-        ArrayList<String> lines = new ArrayList<String>();
-
-        try{
-            FileInputStream fstream = new FileInputStream(fileName+".txt");
-            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-            String line;
-
-            //adds lines of text from file to String[]
-            while((line = br.readLine()) != null){
-                lines.add(line);
-            }
-            br.close();
+        
+        JSONArray enemyList = new JSONArray();
+        
+        for(Enemy e : enemies) {
+            JSONObject enemy = new JSONObject();
+            enemy.put("type",e);
+            enemy.put("x",e.getX());
+            enemy.put("y",e.getY());
+            enemyList.add(enemy);
         }
-        catch (IOException ex){}
-
-        return lines;
+        
+        JSONObject player = new JSONObject();
+        player.put("x",playerSpawn.x);
+        player.put("y",playerSpawn.y);
+        
+        JSONObject json = new JSONObject();
+        json.put("Map",stringMap);
+        json.put("Enemies",enemyList);
+        json.put("Player",player);
+        
+        try {
+             FileWriter file = new FileWriter(fileName+".json");
+             file.write(json.toString());
+             file.close();
+             
+        } catch (IOException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+        }
     }
 
     public static Image[] createImageList(String drectory) {
@@ -76,10 +68,10 @@ public class FileMangement
             try{
                 FileInputStream fis = new FileInputStream(drectory+"/"+fileNames[index]);
                 Image image = ImageIO.read(fis);
-                
+
                 //System.out.print(fileNames[index]+": ");
                 //trim(ImageIO.read(new File(drectory+"/"+fileNames[index])));
-                
+
                 result[index] = image;
             }
             catch (IOException ex){System.out.println("Error with creating image list");}
@@ -151,7 +143,7 @@ public class FileMangement
         int minY = 0, maxY = 0, minX = Integer.MAX_VALUE, maxX = 0;
         boolean isBlank, minYIsDefined = false;
         Raster raster = image.getRaster();
-        
+
         for (int y = 0; y < image.getHeight(); y++) {
             isBlank = true;
 
@@ -175,7 +167,7 @@ public class FileMangement
                 }
             }
         }
-        
+
         System.out.println(minX+","+minY+" . "+ (maxX - minX + 1)+","+ (maxY - minY + 1));
         return image.getSubimage(minX, minY, maxX - minX + 1, maxY - minY + 1);
     }

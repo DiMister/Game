@@ -12,21 +12,24 @@ public class CreateGraphics extends JPanel
     ArrayList<Enemy> enemies;
     Point playerSpawn;
     int tileSize;
+    ArrayList<StaticObject> objects;
     
-    public CreateGraphics(Tile[][] tiles, ArrayList<Enemy> enemies, Point playerSpawn, int tileSize)
+    public CreateGraphics(Tile[][] tiles, ArrayList<Enemy> enemies, ArrayList<StaticObject> objects, Point playerSpawn, int tileSize)
     {
         //tommyinit
         map = tiles;
         this.enemies = enemies;
         this.playerSpawn = playerSpawn;
         this.tileSize = tileSize;
+        this.objects = objects;
         setBackground(Color.black);
     }
     
-    public void updateReset(Tile[][] tiles, ArrayList<Enemy> enemies, Point playerSpawn)
+    public void updateReset(Tile[][] tiles, ArrayList<Enemy> enemies, ArrayList<StaticObject> objects, Point playerSpawn)
     {
         map = tiles;
         this.enemies = enemies;
+        this.objects = objects;
         this.playerSpawn = playerSpawn;
     }
 
@@ -44,7 +47,6 @@ public class CreateGraphics extends JPanel
                 if(temp != null) {
                     g.drawImage(temp.getImage(),tileSize*index,tileSize*i,tileSize,tileSize,null);
                 }
-                //g.drawString(""+i+","+index,30*index,30*i);
             }
         }
         
@@ -56,10 +58,16 @@ public class CreateGraphics extends JPanel
             }
         }
         
+        for(StaticObject obj : objects) {
+            //g.setColor(Color.green);
+            //g.fillRect(obj.getX()-obj.getWidth()/2,obj.getY()-obj.getHeight()/2,obj.getWidth(),obj.getHeight());
+            obj.drawImage(g);
+        }
+        
         //draw enemies
         for(Enemy e : enemies){
-            Image image = e.getImage();
-            g.drawImage(image,e.getX()-(image.getWidth(null)/2),e.getY()-(image.getHeight(null)/2),e.getWidth(),e.getHeight(),null);
+            g.setColor(Color.red);
+            g.fillRect(e.getX()-100,e.getY()-100,e.getWidth(),e.getHeight());
         }
         
         if(playerSpawn != null) {

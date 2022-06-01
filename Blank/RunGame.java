@@ -1,8 +1,15 @@
 import gameObjects.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.util.Iterator;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import java.io.IOException;
 
 public class RunGame implements KeyListener
 {
@@ -10,16 +17,15 @@ public class RunGame implements KeyListener
     JPanel main;
     GameGraphics graph;
     Container c1;
-    
+
     Map map;
     ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     Player player;
-    
-    
+
     public RunGame()
     {
         System.out.print('\u000C');
-        decodeFile("big");
+        decodeJSON("test");
         setupPanel();
         new Thread(player).start();
         for(Enemy e : enemies) {
@@ -28,7 +34,7 @@ public class RunGame implements KeyListener
         }
         update();
     }
-    
+
     private void update()
     {
         Thread runner = new Thread();
@@ -39,7 +45,7 @@ public class RunGame implements KeyListener
                 runner.sleep(5); 
             }
             catch(InterruptedException e) {} 
-            
+
             for(Enemy e : enemies) {
                 e.move();
                 if(player.isColliding(e))
@@ -50,7 +56,7 @@ public class RunGame implements KeyListener
             graph.requestFocus();
         }
     }
-    
+
     private void setupPanel()
     {
         f1 = new JFrame("Don't forget a game name! -Max");
@@ -68,78 +74,50 @@ public class RunGame implements KeyListener
         main.setLayout(new BorderLayout());          
         main.add(graph,BorderLayout.CENTER);
 
-        
         c1.add(main);
         f1.show();
     }
 
-    /** changes a list of strings from file into tiles, enemies, and objects */
-    private void decodeFile(String fileName) {
-        ArrayList<String> lines = FileMangement.readFile(fileName);
-        
-        //find line where tiles --> enemies
-        int split = lines.size();
-        for(int index = 0; index < lines.size(); index++) {
-            if(lines.get(index).equals("")) {
-                split = index;
-                break;
-            }
-        }
-        
-        //find line where enemies --> objects
-        int split2 = lines.size();
-        for(int index = split+1; index < lines.size(); index++) {
-            if(lines.get(index).equals("")) {
-                split2 = index;
-                break;
-            }
-        }
-        
-        String[] mapLines = new String[split];
-        for(int index = 0; index < split; index++){
-            mapLines[index] = lines.get(index);
-        }
-        map = new Map(mapLines);
-        
-        for(int index = split+1; index < split2; index++) {
-            String line = lines.get(index);
-            String[] temp = new String[3];
-            for (int i = 0; i < temp.length; i++) 
-                temp[i] = "";
+    private void decodeJSON(String fileName) {
+        FileReader reader;
+        try{
+            reader = new FileReader(fileName+".json");
+            JSONParser jsonParser = new JSONParser();
+            Object obj = jsonParser.parse(reader);
+            JSONObject jsonObject = (JSONObject)obj;
             
-            int j = 0;
-            for(int i = 0; i < line.length(); i++) {
-                char car = line.charAt(i);
-                if(car != '-') temp[j]+=car;
-                else j++;
+            JSONArray jMap = (JSONArray)jsonObject.get("Map");
+            String[] sMap = new String[jMap.size()];
+            for(int index = 0; index < jMap.size(); index++) {
+                sMap[index] = (String)jMap.get(index);
             }
- 
-            enemies.add(findEnemy(temp[0].charAt(0),Integer.parseInt(temp[1]),Integer.parseInt(temp[2])));
-        }
-        
-        if(split2 < lines.size()) {
-            String line = lines.get(split2+1);
-            String[] temp = new String[3];
-            for (int i = 0; i < temp.length; i++) 
-                temp[i] = "";
+            map = new Map(sMap);
             
-            int j = 0;
-            for(int i = 0; i < line.length(); i++) {
-                char car = line.charAt(i);
-                if(car != '-') temp[j]+=car;
-                else j++;
+            JSONArray sEnemies = (JSONArray)jsonObject.get("Enemies");
+            Iterator iterator = sEnemies.iterator();
+            while(iterator.hasNext()) {
+                JSONObject enemy = (JSONObject)iterator.next();
+                char type = ((String)(enemy.get("type"))).charAt(0);
+                long x = (long)enemy.get("x");
+                long y = (long)enemy.get("y");
+                enemies.add(findEnemy(type,(int)x,(int)y));
             }
-            player = new Player(Integer.parseInt(temp[1]),Integer.parseInt(temp[2]));
-        }
+            
+            JSONObject sPlayer = (JSONObject)jsonObject.get("Player");
+            long x = (long)sPlayer.get("x");
+            long y = (long)sPlayer.get("y");
+            player = new Player((int)x,(int)y);
+            
+        } catch (FileNotFoundException e) { e.printStackTrace();}
+        catch (IOException e){e.printStackTrace();}
+        catch (org.json.simple.parser.ParseException e){e.printStackTrace();}
     }
-    
-    
-    
+
     private Enemy findEnemy(char car, int x, int y) {
         if(car == 's') return new Enemy(x,y);
         return null;
     }
-    
+
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == 65) {
@@ -158,9 +136,9 @@ public class RunGame implements KeyListener
             //w || up
             player.moveInput(0);
         }
-        
+
     }
-    
+
     @Override
     public void keyReleased(KeyEvent e) {
         if(e.getKeyCode() == 65 || e.getKeyCode() == 68 || e.getKeyCode() == 83 || e.getKeyCode() == 87) {
@@ -168,7 +146,7 @@ public class RunGame implements KeyListener
             player.stop();
         }
     }
-    
+
     @Override
     public void keyTyped(KeyEvent e) {
         if(e.getKeyChar() == 'e') {

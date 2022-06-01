@@ -27,8 +27,8 @@ public class ImageObject
         this.y = y;
         this.image = image;
         size = image.getWidth(null)*2;
-        ratio = image.getHeight(null)/image.getWidth(null);
-        boundingBox = new int[]{x,y,image.getWidth(null),image.getHeight(null)};
+        ratio = image.getHeight(null)/(double)image.getWidth(null);
+        boundingBox = new int[]{0,0,getWidth(),getHeight()};
     }
     
     public void setImage(Image image) {

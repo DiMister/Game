@@ -1,3 +1,5 @@
+package gameObjects;
+
 import gameObjects.*;
 import java.awt.*;
 
@@ -34,7 +36,7 @@ public class Map
     public int getWidth() {return tileSize*map[0].length;}
     
     public int getHeight() {return tileSize*map.length;}
-    
+        
     public void draw(Graphics g) {
         for(int index = 0; index < map.length; index++){
           for(int i = 0; i < map[0].length; i++){
@@ -56,10 +58,10 @@ public class Map
         }
     }
     
-    public void collision(Base object) {
+    public void collision(ImageObject object) {
     }
     
-    public boolean isColliding(int x, int y, Base other) {
+    public boolean isColliding(int x, int y, ImageObject other) {
         boolean xLine = false, yLine = false;
         
         if ((other.getX()-other.getColWidth()/2 > x-tileSize/2 &&  other.getX()-other.getColWidth()/2 < x+tileSize/2) ||

@@ -41,7 +41,7 @@ public class Enemy extends Moving implements Runnable
     }
     
     @Override
-    public String toString(){return "s-"+getX()+"-"+getY();}
+    public String toString(){return "\"s\"";}
     
     @Override
     public void run() {
