@@ -1,18 +1,18 @@
 package gameObjects;
 import java.awt.*;
 import java.util.concurrent.TimeUnit;
+import java.text.DecimalFormat;
 
 
 public class Player extends Moving implements Runnable
 {
     //private Thread idle, attack;
     private boolean facingRight = true, attacking = false;
+    private double diaSpeed = Math.sqrt(Math.pow(speed, 2)/2);
     
     public Player(int x, int y)
     {
-        super(x,y,200,0.6875,new int[]{56,33,56,101},4);       
-        Thread anamator = new Thread(this);
-        anamator.start();
+        super(x,y,200,0.6875,new int[]{56,33,56,101},4); 
     }
     
     public void attack() {
@@ -20,27 +20,66 @@ public class Player extends Moving implements Runnable
     }
 
     public void moveInput(int dir) {
-        //0 is up, 1 is right, 2 is down, 3 is left
+        //1 is up, 2 is right, 3 is down, 4 is left
+        boolean movingX, movingY;
         
-        if(dir== 0){
-            if (dirX==0)
-            dirY = -speed;
+        if (dirX != 0) movingX = true;
+        else movingX = false;
+        
+        if (dirY != 0) movingY = true;
+        else movingY = false;
+        
+        if(dir == 1){
+            if (movingX) {
+                dirX = diaSpeed*(dirX/Math.abs(dirX));
+                dirY = -diaSpeed;
+            } else dirY = -speed;
+            return;
         }
         
         if(dir == 2){
-            dirY = speed;
-        }else if(dir == 3){
-            dirX = -speed;
-            facingRight = false;
-            boundingBox[0] = 88; //calulated with (int)MoreMath.reverse(boundingBox[0]+boundingBox[2],0,getWidth());
-            
-        }else if(dir == 1){
-            dirX = speed;
             facingRight = true;
-            boundingBox[0] = 56; 
+            boundingBox[0] = 56;
             
+            if (movingY) {
+                dirY = diaSpeed*(dirY/Math.abs(dirY));
+                dirX = diaSpeed;
+            } else dirX = speed;
+            return;
         }
-        firction = false;
+        
+        if(dir == 3){
+            if (movingX) {
+                dirX = diaSpeed*(dirX/Math.abs(dirX));
+                dirY = diaSpeed;
+            } else dirY = speed;
+            return;
+        }
+        
+        if(dir == 4){
+            facingRight = false;
+            boundingBox[0] = 88;
+            
+            if (movingY) {
+                dirY = diaSpeed*(dirY/Math.abs(dirY));
+                dirX = -diaSpeed;
+            } else dirX = -speed;
+            return;
+        }
+        
+        if(dir == -1 || dir == -3){
+            if (movingX)
+                dirX = speed*(dirX/Math.abs(dirX));
+            dirY = 0;
+            return;
+        }
+        
+        if(dir == -2 || dir == -4){
+            if (movingY)
+                dirY = speed*(dirY/Math.abs(dirY));
+            dirX = 0;
+            return;
+        }    
     }
     
 
