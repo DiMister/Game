@@ -49,14 +49,16 @@ public class ImageObject
     public void setImage(Image image) {
         this.image = image;
     }
+    
+    public void setX(double newX) {x = newX;}
 
-    public int getX() {
-        return (int)(x+0.5);
-    }
+    public int getX() {return (int)(x+0.5);}
 
-    public int getY() {
-        return (int)(y+0.5);
-    }
+    public void setY(double newY) {y = newY;}
+    
+    public int getY() {return (int)(y+0.5);}
+    
+    
 
     public int getWidth() {
         return size;
@@ -99,21 +101,9 @@ public class ImageObject
         g.drawImage(image,(int)X,(int)Y,getWidth(),getHeight(),null);
     }
 
-    public int getColHeight() {return boundingBox.getHeight();}
-
-    public int getColWidth() {return boundingBox.getWidth();}
+    public BoundingBox getBoundingBox() {return boundingBox;}
 
     public boolean isColliding(ImageObject other) {
-        boolean xLine = false, yLine = false;
-
-        if ((other.getX()-other.getColWidth()/2 > x-getColWidth()/2 &&  other.getX()-other.getColWidth()/2 < x+getColWidth()/2) ||
-        (other.getX()+other.getColWidth()/2 > x-getColWidth()/2 &&  other.getX()+other.getColWidth()/2 < x+getColWidth()/2))
-            xLine = true;
-
-        if ((other.getY()-other.getColHeight()/2 > y-getColHeight()/2 &&  other.getY()-other.getColHeight()/2 < y+getColHeight()/2) ||
-        (other.getY()+other.getColHeight()/2 > y-getColHeight()/2 &&  other.getY()+other.getColHeight()/2 < y+getColHeight()/2))
-            yLine = true;
-
-        return xLine && yLine;
+        return boundingBox.isColliding(other.getBoundingBox(), getX(), getY(), other.getX(), other.getY());
     }
 }

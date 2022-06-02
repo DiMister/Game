@@ -4,6 +4,4 @@ comment1.params=x\ y\ size\ image\ boundingBox\ speed
 comment1.target=Moving(int,\ int,\ int,\ java.awt.Image,\ int[],\ double)
 comment2.params=
 comment2.target=void\ move()
-comment3.params=
-comment3.target=void\ stop()
-numComments=4
+numComments=3

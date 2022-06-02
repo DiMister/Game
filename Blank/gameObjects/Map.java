@@ -59,20 +59,5 @@ public class Map
         }
     }
     
-    public void collision(ImageObject object) {
-    }
-    
-    public boolean isColliding(int x, int y, ImageObject other) {
-        boolean xLine = false, yLine = false;
-        
-        if ((other.getX()-other.getColWidth()/2 > x-tileSize/2 &&  other.getX()-other.getColWidth()/2 < x+tileSize/2) ||
-            (other.getX()+other.getColWidth()/2 > x-tileSize/2 &&  other.getX()+other.getColWidth()/2 < x+tileSize/2))
-            xLine = true;
-        
-        if ((other.getY()-other.getColHeight()/2 > y-tileSize/2 &&  other.getY()-other.getColHeight()/2 < y+tileSize/2) ||
-            (other.getY()+other.getColHeight()/2 > y-tileSize/2 &&  other.getY()+other.getColHeight()/2 < y+tileSize/2))
-            yLine = true;
-            
-        return xLine && yLine;
-    }
+ 
 }

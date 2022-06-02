@@ -12,7 +12,7 @@ public class Player extends Moving implements Runnable
     public Player(int x, int y)
     {
         super(x,y,200,FileMangement.getImage("Player/idle/Warrior_Idle_1"),new int[]{20,12,12,30},4); 
-        FileMangement.trim(FileMangement.getBufferedImage("Skeleton Enemy/idle/idle1"));
+        //FileMangement.trim(FileMangement.getBufferedImage("Skeleton Enemy/idle/idle1"));
         Thread anamator = new Thread(this);
         anamator.start();
 
