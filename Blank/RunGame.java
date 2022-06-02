@@ -144,7 +144,10 @@ public class RunGame implements KeyListener
             //w || up
             player.moveInput(1);
         }
-
+        if(e.getKeyChar() == 'e') {
+            //e || attack
+            player.attack();
+        }
     }
 
     @Override
@@ -169,9 +172,6 @@ public class RunGame implements KeyListener
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if(e.getKeyChar() == 'e') {
-            //e || attack
-            player.attack();
-        }
+
     }
 }

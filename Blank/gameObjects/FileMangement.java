@@ -183,5 +183,18 @@ public class FileMangement
         System.out.println(minX+","+minY+" . "+ (maxX - minX + 1)+","+ (maxY - minY + 1));
         return image.getSubimage(minX, minY, maxX - minX + 1, maxY - minY + 1);
     }
+    
+    public static Image getImage(String fileName) {
+        return Toolkit.getDefaultToolkit().getImage("images/"+fileName+".png");
+    }
+    
+    public static BufferedImage getBufferedImage(String fileName) {
+        try {
+            FileInputStream fis = new FileInputStream("images/"+fileName+".png");
+            return ImageIO.read(fis);
+        }
+        catch (IOException ioe){ioe.printStackTrace();}
+        return null;
+    }
 }
 

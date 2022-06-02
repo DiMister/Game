@@ -44,6 +44,8 @@ public class GameGraphics extends JPanel
         
         for(StaticObject obj : objects) {
             obj.drawImage(g);
+            //obj.drawBoundingBox(g);
+            //obj.drawImageArea(g);            
         }
         
         //draw player

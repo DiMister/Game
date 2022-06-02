@@ -11,7 +11,7 @@ public class Enemy extends Moving implements Runnable
     
     public Enemy(int x,int y)
     {
-        super(x,y,200,1,new int[]{80,50,40,100},1);
+        super(x,y,200,FileMangement.getImage("Skeleton Enemy/idle/idle1"),new int[]{22,16,16,33},1);
         Thread anamator = new Thread(this);
         anamator.start();
         startRandomMovement();
@@ -30,9 +30,11 @@ public class Enemy extends Moving implements Runnable
                     if(randomDir == 0) {
                         dirX = speed;
                         facingRight = true;
+                        boundingBox.right();
                     }else if(randomDir == 1) {
                         dirX = -speed;
                         facingRight = false;
+                        boundingBox.left();
                     }else if(randomDir == 2) dirY = speed;
                     else if(randomDir == 3) dirY = -speed;
                     randomDir = (int)(Math.random() * 5);

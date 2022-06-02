@@ -66,8 +66,7 @@ public class CreateGraphics extends JPanel
         
         //draw enemies
         for(Enemy e : enemies){
-            g.setColor(Color.red);
-            g.fillRect(e.getX()-100,e.getY()-100,e.getWidth(),e.getHeight());
+            e.drawImage(g);
         }
         
         if(playerSpawn != null) {

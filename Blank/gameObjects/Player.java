@@ -11,10 +11,10 @@ public class Player extends Moving implements Runnable
     private double diaSpeed = Math.round(Math.sqrt(Math.pow(speed, 2)/2)*100)/100.0;
     public Player(int x, int y)
     {
-        super(x,y,200,Toolkit.getDefaultToolkit().getImage("images/Player/idle/Warrior_Idle_1"),new int[]{56,33,56,101},4); 
+        super(x,y,200,FileMangement.getImage("Player/idle/Warrior_Idle_1"),new int[]{20,12,12,30},4); 
+        FileMangement.trim(FileMangement.getBufferedImage("Skeleton Enemy/idle/idle1"));
         Thread anamator = new Thread(this);
         anamator.start();
-        System.out.println(diaSpeed);
 
     }
     
