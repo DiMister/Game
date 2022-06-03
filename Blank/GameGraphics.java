@@ -48,6 +48,9 @@ public class GameGraphics extends JPanel
             //obj.drawImageArea(g);            
         }
         
+        objects.get(0).drawBoundingBox(g);
+        objects.get(0).drawImageArea(g);
+        
         //draw player
         
         player.drawImage(g);

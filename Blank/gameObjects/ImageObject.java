@@ -106,4 +106,8 @@ public class ImageObject
     public boolean isColliding(ImageObject other) {
         return boundingBox.isColliding(other.getBoundingBox(), getX(), getY(), other.getX(), other.getY());
     }
+    
+    public void removeCollison(ImageObject mover) {
+        boundingBox.removeCollision(mover, getX(), getY());
+    }
 }
