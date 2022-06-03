@@ -47,7 +47,13 @@ public class RunGame implements KeyListener
                 e.move();
             }
             player.move();
-            objects.get(0).removeCollison(player);
+            
+            for (StaticObject obj: objects) 
+                obj.removeCollison(player);
+                
+            for (Enemy e: enemies) 
+                e.removeCollison(player);
+                
             graph.repaint();
             graph.requestFocus();
         }
