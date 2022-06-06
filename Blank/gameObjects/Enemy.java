@@ -4,14 +4,14 @@ import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 
-public class Enemy extends Moving implements Runnable
+public class Enemy extends Complex implements Runnable
 {
     boolean facingRight = true;
     boolean attacking = false;
     
     public Enemy(int x,int y)
     {
-        super(x,y,200,FileMangement.getImage("Skeleton Enemy/idle/idle1"),new int[]{22,16,16,33},1);
+        super(x,y,200,FileMangement.getImage("Skeleton Enemy/idle/idle1"),new int[]{22,16,16,33},1,new int[]{38,16,16,33},2);
         Thread anamator = new Thread(this);
         anamator.start();
         startRandomMovement();
@@ -57,7 +57,21 @@ public class Enemy extends Moving implements Runnable
             try{TimeUnit.MILLISECONDS.sleep(100);}
             catch (InterruptedException ie){ie.printStackTrace();}
             
-            if(attacking){
+            if(hit) {
+                if(facingRight)images = FileMangement.createImageList("images/Skeleton Enemy/hit");
+                else images = FileMangement.createImageListFlip("images/Skeleton Enemy/hit");
+                index = 0;
+                current = "hit";
+                while(index < images.length-1) {
+                    try{TimeUnit.MILLISECONDS.sleep(50);}
+                    catch (InterruptedException ie){ie.printStackTrace();}
+                    dirX = 0;
+                    dirY = 0;
+                    setImage(images[index]);
+                    index++;
+                }
+                hit = false;
+            }else if(attacking){
                 if(facingRight)images = FileMangement.createImageList("images/Skeleton Enemy/Attack");
                 else images = FileMangement.createImageListFlip("images/Skeleton Enemy/Attack");
                 index = 0;

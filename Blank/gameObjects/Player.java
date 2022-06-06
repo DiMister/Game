@@ -4,22 +4,17 @@ import java.util.concurrent.TimeUnit;
 import java.text.DecimalFormat;
 
 
-public class Player extends Moving implements Runnable
+public class Player extends Complex implements Runnable
 {
     //private Thread idle, attack;
-    private boolean facingRight = true, attacking = false;
+    private boolean facingRight = true;
     private double diaSpeed = Math.round(Math.sqrt(Math.pow(speed, 2)/2)*100)/100.0;
     public Player(int x, int y)
     {
-        super(x,y,200,FileMangement.getImage("Player/idle/Warrior_Idle_1"),new int[]{20,12,12,30},4); 
-        //FileMangement.trim(FileMangement.getBufferedImage("Skeleton Enemy/idle/idle1"));
+        super(x,y,200,FileMangement.getImage("Player/idle/Warrior_Idle_1"),new int[]{20,12,12,30},4,new int[]{32,8,30,30},5); 
         Thread anamator = new Thread(this);
         anamator.start();
 
-    }
-    
-    public void attack() {
-        attacking = true;
     }
 
     public void moveInput(int dir) {
@@ -45,7 +40,7 @@ public class Player extends Moving implements Runnable
         if(dir == 2){
             facingRight = true;
             boundingBox.right();
-            
+            attack.right();
             if (movingY) {
                 dirY = diaSpeed*(dirY/Math.abs(dirY));
                 dirX = diaSpeed;
@@ -64,7 +59,7 @@ public class Player extends Moving implements Runnable
         if(dir == 4){
             facingRight = false;
             boundingBox.left();
-            
+            attack.left();
             if (movingY) {
                 dirY = diaSpeed*(dirY/Math.abs(dirY));
                 dirX = -diaSpeed;
@@ -100,7 +95,22 @@ public class Player extends Moving implements Runnable
             try{TimeUnit.MILLISECONDS.sleep(100);}
             catch (InterruptedException ie){ie.printStackTrace();}
             
-            if(attacking){
+            if(hit){
+                if(facingRight)images = FileMangement.createImageList("images/Player/Death-Effect");
+                else images = FileMangement.createImageListFlip("images/Player/Death-Effect");
+                index = 0;
+                dirX = 0;
+                dirY = 0;
+                current = "hit";
+                while(index < images.length-1) {
+                    try{TimeUnit.MILLISECONDS.sleep(50);}
+                    catch (InterruptedException ie){ie.printStackTrace();}
+                    
+                    setImage(images[index]);
+                    index++;
+                }
+                hit = false;
+            }else if(attacking){
                 if(facingRight)images = FileMangement.createImageList("images/Player/Attack");
                 else images = FileMangement.createImageListFlip("images/Player/Attack");
                 index = 0;

@@ -38,6 +38,7 @@ public class GameGraphics extends JPanel
         //draw enemies
         for(Enemy e : enemies){
             e.drawImage(g);
+            e.drawAttack(g);
             //e.drawBoundingBox(g);
             //e.drawImageArea(g);
         }
@@ -51,6 +52,7 @@ public class GameGraphics extends JPanel
         //draw player
         
         player.drawImage(g);
+        player.drawAttack(g);
         //player.drawBoundingBox(g);
         //player.drawImageArea(g);
         

@@ -45,14 +45,19 @@ public class RunGame implements KeyListener
 
             for(Enemy e : enemies) {
                 e.move();
+                //e.isHitting(player);
+                System.out.println(player.isHitting(e));
             }
             player.move();
             
-            for (StaticObject obj: objects) 
+            
+            for (StaticObject obj: objects) {
                 obj.removeCollison(player);
+            }
                 
-            for (Enemy e: enemies) 
+            for (Enemy e: enemies) {
                 e.removeCollison(player);
+            }
                 
             graph.repaint();
             graph.requestFocus();

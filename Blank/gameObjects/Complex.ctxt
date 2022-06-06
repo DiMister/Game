@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Complex
+comment1.params=x\ y\ size\ image\ boundingBox\ speed\ attackBounds\ health
+comment1.target=Complex(int,\ int,\ int,\ java.awt.Image,\ int[],\ double,\ int[],\ int)
+comment2.params=
+comment2.target=void\ move()
+comment3.params=
+comment3.target=void\ attack()
+comment4.params=
+comment4.target=void\ hit()
+comment5.params=obj
+comment5.target=boolean\ isHitting(ImageObject)
+comment6.params=g
+comment6.target=void\ drawAttack(java.awt.Graphics)
+numComments=7
