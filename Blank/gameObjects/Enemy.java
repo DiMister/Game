@@ -11,7 +11,7 @@ public class Enemy extends Complex implements Runnable
     
     public Enemy(int x,int y)
     {
-        super(x,y,200,FileMangement.getImage("Skeleton Enemy/idle/idle1"),new int[]{22,16,16,33},1,new int[]{38,16,16,33},2);
+        super(x,y,200,FileMangement.getImage("Skeleton Enemy/idle/idle1"),new int[]{22,16,16,33},1,new int[]{38,16,25,33},2);
         Thread anamator = new Thread(this);
         anamator.start();
         startRandomMovement();
@@ -31,14 +31,17 @@ public class Enemy extends Complex implements Runnable
                         dirX = speed;
                         facingRight = true;
                         boundingBox.right();
+                        attack.right();
                     }else if(randomDir == 1) {
                         dirX = -speed;
                         facingRight = false;
                         boundingBox.left();
+                        attack.left();
                     }else if(randomDir == 2) dirY = speed;
                     else if(randomDir == 3) dirY = -speed;
                     randomDir = (int)(Math.random() * 5);
-                    if(randomDir == 0) attacking = true;
+                    //if(randomDir == 0) attacking = true;
+                    attacking = true;
                 }
             }
         };
@@ -63,7 +66,7 @@ public class Enemy extends Complex implements Runnable
                 index = 0;
                 current = "hit";
                 while(index < images.length-1) {
-                    try{TimeUnit.MILLISECONDS.sleep(50);}
+                    try{TimeUnit.MILLISECONDS.sleep(500);}
                     catch (InterruptedException ie){ie.printStackTrace();}
                     dirX = 0;
                     dirY = 0;

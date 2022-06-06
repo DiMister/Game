@@ -46,13 +46,18 @@ public class RunGame implements KeyListener
             for(Enemy e : enemies) {
                 e.move();
                 //e.isHitting(player);
-                System.out.println(player.isHitting(e));
+                //System.out.println(player.isHitting(e));
+                if(player.isHitting(e)) e.hit();
+                if(e.isHitting(player)) player.hit();
             }
             player.move();
             
             
             for (StaticObject obj: objects) {
                 obj.removeCollison(player);
+                for(Enemy e: enemies) {
+                    obj.removeCollison(e);
+                }
             }
                 
             for (Enemy e: enemies) {

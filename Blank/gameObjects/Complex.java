@@ -5,7 +5,7 @@ import java.awt.*;
 public class Complex extends ImageObject 
 {
     protected double speed, dirX=0, dirY=0;
-    protected boolean attacking = false, hit = false;
+    protected boolean attacking = false, hit = true ;
     protected BoundingBox attack;
     protected int health;
     
