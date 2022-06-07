@@ -42,13 +42,20 @@ public class RunGame implements KeyListener
                 runner.sleep(5); 
             }
             catch(InterruptedException e) {} 
+            
+            for(int index = 0; index < enemies.size(); index++) {
+                if(enemies.get(index).isDead()) {
+                    enemies.remove(index);
+                    index--;
+                }
+            }
 
             for(Enemy e : enemies) {
                 e.move();
                 //e.isHitting(player);
-                //System.out.println(player.isHitting(e));
-                if(player.isHitting(e)) e.hit();
-                if(e.isHitting(player)) player.hit();
+                if(player.isAttacking(e)) e.hit();
+                
+                if(e.isAttacking(player)) player.hit();
             }
             player.move();
             

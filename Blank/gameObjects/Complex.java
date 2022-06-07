@@ -5,7 +5,7 @@ import java.awt.*;
 public class Complex extends ImageObject 
 {
     protected double speed, dirX=0, dirY=0;
-    protected boolean attacking = false, hit = true ;
+    protected boolean attacking = false, hit = false ;
     protected BoundingBox attack;
     protected int health;
     
@@ -25,17 +25,25 @@ public class Complex extends ImageObject
     }
     
     public void attack() {
-        attacking = true;
+        if(!hit) attacking = true;
     }
     
     public void hit() {
-        health--;
-        hit = true;
+        if(!hit) {    
+            health--;
+            hit = true;
+        }
     }
     
-    public boolean isHitting(ImageObject obj) {
-        if(attacking) return attack.isColliding(obj.getBoundingBox(),getX(),getY(),obj.getX(),obj.getY());
-        return false;
+    public boolean isAttacking(ImageObject obj) {
+        
+        
+        if(attacking) {
+            double X = x-boundingBox.getX()-(boundingBox.getWidth()/2)+attack.getX()+attack.getWidth()/2;
+            double Y = y-boundingBox.getY()-(boundingBox.getHeight()/2)+attack.getY()+attack.getHeight()/2;
+            //System.out.println("my: "+X+","+Y+" their: "+obj.getX()+","+obj.getY());
+            return attack.isColliding(obj.getBoundingBox(),(int)X,(int)Y,obj.getX(),obj.getY());
+        }return false;
     }
     
     public void drawAttack(Graphics g) {

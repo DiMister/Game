@@ -20,6 +20,7 @@ public class Player extends Complex implements Runnable
     public void moveInput(int dir) {
         //1 is up, 2 is right, 3 is down, 4 is left
         if(attacking) return;
+        if(hit) return;
         
         boolean movingX, movingY;
         
@@ -103,7 +104,7 @@ public class Player extends Complex implements Runnable
                 dirY = 0;
                 current = "hit";
                 while(index < images.length-1) {
-                    try{TimeUnit.MILLISECONDS.sleep(50);}
+                    try{TimeUnit.MILLISECONDS.sleep(100);}
                     catch (InterruptedException ie){ie.printStackTrace();}
                     
                     setImage(images[index]);

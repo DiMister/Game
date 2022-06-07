@@ -6,12 +6,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Enemy extends Complex implements Runnable
 {
-    boolean facingRight = true;
-    boolean attacking = false;
+    boolean facingRight = true, dead = false;
     
     public Enemy(int x,int y)
     {
-        super(x,y,200,FileMangement.getImage("Skeleton Enemy/idle/idle1"),new int[]{22,16,16,33},1,new int[]{38,16,25,33},2);
+        super(x,y,200,FileMangement.getImage("Skeleton Enemy/idle/idle1"),new int[]{22,16,16,33},1,new int[]{38,16,25,33},5);
         Thread anamator = new Thread(this);
         anamator.start();
         startRandomMovement();
@@ -41,13 +40,16 @@ public class Enemy extends Complex implements Runnable
                     else if(randomDir == 3) dirY = -speed;
                     randomDir = (int)(Math.random() * 5);
                     //if(randomDir == 0) attacking = true;
-                    attacking = true;
+                    attack();
                 }
             }
         };
         sort.start();
     }
     
+    public boolean isDead() {
+        return dead;
+    }
     @Override
     public String toString(){return "\"s\"";}
     
@@ -60,13 +62,27 @@ public class Enemy extends Complex implements Runnable
             try{TimeUnit.MILLISECONDS.sleep(100);}
             catch (InterruptedException ie){ie.printStackTrace();}
             
-            if(hit) {
+            if(health <= 0) {
+                if(facingRight)images = FileMangement.createImageList("images/Skeleton Enemy/death");
+                else images = FileMangement.createImageListFlip("images/Skeleton Enemy/death");
+                index = 0;
+                current = "death";
+                while(index < images.length-1) {
+                    try{TimeUnit.MILLISECONDS.sleep(200);}
+                    catch (InterruptedException ie){ie.printStackTrace();}
+                    dirX = 0;
+                    dirY = 0;
+                    setImage(images[index]);
+                    index++;
+                }
+                dead = true;
+            }if(hit) {
                 if(facingRight)images = FileMangement.createImageList("images/Skeleton Enemy/hit");
                 else images = FileMangement.createImageListFlip("images/Skeleton Enemy/hit");
                 index = 0;
                 current = "hit";
                 while(index < images.length-1) {
-                    try{TimeUnit.MILLISECONDS.sleep(500);}
+                    try{TimeUnit.MILLISECONDS.sleep(200);}
                     catch (InterruptedException ie){ie.printStackTrace();}
                     dirX = 0;
                     dirY = 0;

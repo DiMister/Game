@@ -29,13 +29,19 @@ public class BoundingBox
 
     public boolean isColliding(BoundingBox other, int mx, int my, int ox, int oy) {
         boolean xLine = false, yLine = false;
+        int moverLeftWall = ox-other.getWidth()/2, mLeftWall = mx-width/2,
+            moverRightWall = ox+other.getWidth()/2, mRightWall = mx+width/2;
+        int moverUpWall = oy-other.getHeight()/2, mUpWall = my-height/2,
+            moverDownWall = oy+other.getHeight()/2, mDownWall = my+height/2;
 
-        if ((ox-other.getWidth()/2 > mx-width/2 &&  ox-other.getWidth()/2 < my+width/2) ||
-        (ox+other.getWidth()/2 > mx-width/2 &&  ox+other.getWidth()/2 < mx+width/2))
+        if ((moverLeftWall > mLeftWall &&  moverLeftWall < mRightWall) ||
+            (moverRightWall > mLeftWall &&  moverRightWall < mRightWall) || 
+            (moverRightWall >= mRightWall && moverLeftWall <= mLeftWall))
             xLine = true;
 
-        if ((oy-other.getHeight()/2 > my-height/2 &&  oy-other.getHeight()/2 < my+height/2) ||
-        (oy+other.getHeight()/2 > my-height/2 &&  oy+other.getHeight()/2 < my+height/2))
+        if ((moverUpWall > mUpWall &&  moverUpWall < my+height/2) ||
+            (moverDownWall > mUpWall &&  moverDownWall < mDownWall) || 
+            (moverDownWall >= mDownWall && moverUpWall <= mUpWall))
             yLine = true;
 
         return xLine && yLine;
@@ -78,6 +84,7 @@ public class BoundingBox
     public int collisionY(ImageObject mover,int my) {
         BoundingBox other = mover.getBoundingBox();
         int result = 0;
+        
         int moverUpWall = mover.getY()-other.getHeight()/2, mUpWall = my-height/2,
             moverDownWall = mover.getY()+other.getHeight()/2, mDownWall = my+height/2;
         
