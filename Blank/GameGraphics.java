@@ -26,10 +26,11 @@ public class GameGraphics extends JPanel
 
     public void paint (Graphics g)         
     { 
-        super.paint(g); 
+        super.paint(g);
         //displaces entire graph (for fun put this in front of super.paint(g)
         g.translate((screenW/2)-(player.getX()),(screenH/2)-(player.getY()));
-        
+         
+
         //draws tiles from tile map
         map.draw(g);
         //map.drawGrid(g);
