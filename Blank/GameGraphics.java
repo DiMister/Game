@@ -6,16 +6,14 @@ import javax.swing.*;
 public class GameGraphics extends JPanel
 {
     Map map;
-    ArrayList<Enemy> enemies;
     ArrayList<StaticObject> objects;
     Player player;
     int screenH,screenW;
     
-    public GameGraphics(Map tiles, ArrayList<Enemy> enemies, ArrayList<StaticObject> objects, Player player, Dimension ss)
+    public GameGraphics(Map tiles, ArrayList<StaticObject> objects, Player player, Dimension ss)
     {
         //tommyinit
         map = tiles;
-        this.enemies = enemies;
         this.player = player;
         this.objects = objects;
         screenH = ss.height;
@@ -36,13 +34,7 @@ public class GameGraphics extends JPanel
         //map.drawGrid(g);
         
        
-        //draw enemies
-        for(Enemy e : enemies){
-            e.drawImage(g);
-            //e.drawAttack(g);
-            //e.drawBoundingBox(g);
-            //e.drawImageArea(g);
-        }
+       
         
         for(StaticObject obj : objects) {
             obj.drawImage(g);

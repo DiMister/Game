@@ -19,7 +19,6 @@ public class RunGame implements KeyListener
     Container c1;
 
     Map map;
-    ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     ArrayList<StaticObject> objects = new ArrayList<StaticObject>();
     Player player;
 
@@ -43,33 +42,17 @@ public class RunGame implements KeyListener
             }
             catch(InterruptedException e) {} 
             
-            for(int index = 0; index < enemies.size(); index++) {
-                if(enemies.get(index).isDead()) {
-                    enemies.remove(index);
-                    index--;
-                }
-            }
 
-            for(Enemy e : enemies) {
-                e.move();
-                //e.isHitting(player);
-                if(player.isAttacking(e)) e.hit();
-                
-                if(e.isAttacking(player)) player.hit();
-            }
+
+
             player.move();
             
             
             for (StaticObject obj: objects) {
                 obj.removeCollison(player);
-                for(Enemy e: enemies) {
-                    obj.removeCollison(e);
-                }
+
             }
                 
-            for (Enemy e: enemies) {
-                e.removeCollison(player);
-            }
                 
             graph.repaint();
             graph.requestFocus();
@@ -84,7 +67,7 @@ public class RunGame implements KeyListener
         f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f1.setResizable(false);
 
-        graph = new GameGraphics(map,enemies,objects,player,ss);
+        graph = new GameGraphics(map,objects,player,ss);
         graph.addKeyListener(this);
 
         c1 = f1.getContentPane();
@@ -112,7 +95,7 @@ public class RunGame implements KeyListener
             }
             map = new Map(sMap);
             
-            JSONArray sEnemies = (JSONArray)jsonObject.get("Enemies");
+            /*JSONArray sEnemies = (JSONArray)jsonObject.get("Enemies");
             Iterator iterator = sEnemies.iterator();
             while(iterator.hasNext()) {
                 JSONObject enemy = (JSONObject)iterator.next();
@@ -120,10 +103,10 @@ public class RunGame implements KeyListener
                 long x = (long)enemy.get("x");
                 long y = (long)enemy.get("y");
                 enemies.add(findEnemy(type,(int)x,(int)y));
-            }
+            }*/
             
             JSONArray sObject = (JSONArray)jsonObject.get("Objects");
-            iterator = sObject.iterator();
+            Iterator iterator = sObject.iterator();
             while(iterator.hasNext()) {
                 JSONObject object = (JSONObject)iterator.next();
                 String type = (String)object.get("type");
