@@ -2,10 +2,10 @@
 dependency1.from=RunGame
 dependency1.to=GameGraphics
 dependency1.type=UsesDependency
-editor.fx.0.height=737
-editor.fx.0.width=814
-editor.fx.0.x=232
-editor.fx.0.y=-6
+editor.fx.0.height=26
+editor.fx.0.width=158
+editor.fx.0.x=-21333
+editor.fx.0.y=-21333
 objectbench.height=94
 objectbench.width=761
 package.divider.horizontal=0.6
